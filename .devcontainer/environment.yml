@@ -1,0 +1,13 @@
+name: tprstats
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - statsmodels
+  - xarray
+  - seaborn
+  - openpyxl
+  - scikit-learn
+  - cookiecutter=2.5.*
+  - ipykernel=6.*
