@@ -1,16 +1,26 @@
-[tool.poetry]
+[project]
 name = "tprstats"
 version = "0.1.0"
+authors = [
+    {name = "Dennis Epple", email = "epple@cmu.edu"}, 
+    {name = "Stephen Epple", email = "sepple@alumni.cmu.edu"}, 
+    ]
 description = "Statistical recipes, methods and applications for students at the Tepper School of Business."
-authors = ["Stephen Epple"]
-license = "MIT"
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.9"
-
-[tool.poetry.dev-dependencies]
+dependencies = []
+requires-python = ">= 3.11"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-aarch64", "linux-64", "osx-arm64", "osx-64", "win-64"]
+
+[tool.pixi.pypi-dependencies]
+tprstats = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+statsmodels = ">=0.14.4,<0.15"

@@ -1,21 +1,12 @@
-# syntax=docker/dockerfile:1
+FROM mcr.microsoft.com/devcontainers/base:jammy
 
-# installs Conda, Poetry & Cookiecutter using miniforge 
-FROM condaforge/miniforge3:latest
+ARG PIXI_VERSION=v0.35.0
+RUN curl -L -o /usr/local/bin/pixi -fsSL --compressed "https://github.com/prefix-dev/pixi/releases/download/${PIXI_VERSION}/pixi-$(uname -m)-unknown-linux-musl" \
+    && chmod +x /usr/local/bin/pixi \
+    && pixi info
 
-RUN apt update -y && \
-  apt upgrade -y && \
-  apt install -y --no-install-recommends \
-  git \
-  make \
-  curl
+# set some user and workdir settings to work nicely with vscode
+USER vscode
+WORKDIR /home/vscode
 
-ADD environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml
-# Pull the environment name out of the environment.yml
-RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
-ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
-
-RUN curl -sSL https://install.python-poetry.org | python3 -
-
-ENV PATH="$HOME/root/.local/bin:${PATH}"
+RUN echo 'eval "$(pixi completion -s bash)"' >> /home/vscode/.bashrc
