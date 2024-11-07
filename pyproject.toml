@@ -6,7 +6,7 @@ authors = [
     {name = "Stephen Epple", email = "sepple@alumni.cmu.edu"}, 
     ]
 description = "Statistical recipes, methods and applications for students at the Tepper School of Business."
-dependencies = []
+dependencies = ["ruff"]
 requires-python = ">= 3.11"
 
 [build-system]
@@ -21,6 +21,8 @@ platforms = ["linux-aarch64", "linux-64", "osx-arm64", "osx-64", "win-64"]
 tprstats = { path = ".", editable = true }
 
 [tool.pixi.tasks]
+start = "python src/tprstats"
+lint = "ruff check"
 
 [tool.pixi.dependencies]
 statsmodels = ">=0.14.4,<0.15"
