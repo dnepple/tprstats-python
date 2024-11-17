@@ -21,6 +21,9 @@ pytest-xdist = ">=2.5.0"
 hatch = ">=1.12.0"
 twine = ">=5.1.1"
 
+[feature.release.tasks]
+build = "hatch build"
+
 [feature.docs.dependencies]
 Sphinx = ">=7.3.7"
 furo = ">=2023.5.20"
@@ -39,6 +42,8 @@ python = "3.12.*"
 
 [tasks]
 postinstall = "pip install --no-build-isolation --no-deps --disable-pip-version-check -e ."
+lint = "ruff check --fix src/tprstats"
+format = "ruff format src/tprstats"
 
 [environments]
 default = ["py312", "dev"]
