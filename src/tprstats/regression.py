@@ -1,5 +1,4 @@
 import statsmodels.formula.api as smf
-import pandas as pd
 
 
 def lm(formula, data):
