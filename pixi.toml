@@ -19,6 +19,9 @@ ruff = ">=0.5.6"
 pre-commit = ">=3"
 pytest = ">=7.1.2"
 pytest-xdist = ">=2.5.0"
+openpyxl = ">=3.1.5,<4"
+ipykernel = ">=6.29.5,<7"
+pip = ">=24.3.1,<25"
 
 [feature.release.dependencies]
 hatch = ">=1.12.0"
