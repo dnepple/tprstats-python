@@ -11,6 +11,9 @@ pandas = ">=2.2.3,<3"
 pip = "*"
 hatchling = "*"
 
+[pypi-dependencies]
+tprstats = { path = ".", editable = true }
+
 [feature.dev.dependencies]
 ruff = ">=0.5.6"
 pre-commit = ">=3"
