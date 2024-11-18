@@ -6,7 +6,7 @@ authors = [
     {name = "Dennis Epple", email = "epple@cmu.edu"}, 
     {name = "Stephen Epple", email = "sepple@alumni.cmu.edu"}, 
     ]
-requires-python = ">= 3.11"
+requires-python = ">= 3.10"
 dependencies = ["pandas", "statsmodels"]
 
 [tool.hatch.build.targets.wheel]
