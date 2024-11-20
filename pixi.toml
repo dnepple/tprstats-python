@@ -6,6 +6,7 @@ platforms = ["linux-64", "osx-64", "osx-arm64", "win-64", "linux-aarch64"]
 [dependencies]
 statsmodels = ">=0.14.4,<0.15"
 pandas = ">=2.2.3,<3"
+matplotlib = ">=3.9.2,<4"
 
 [host-dependencies]
 pip = "*"
