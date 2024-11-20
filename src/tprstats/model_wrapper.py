@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
+from numpy import mean as numpy_mean
+import pandas as pd
 
 
 class ModelWrapper(ABC):
@@ -77,6 +79,43 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper):
         self._summary = self._result.summary(slim=True)
         self._formula = formula
         self._data = data
+
+
+class LogitModel(StatsmodelsModelWrapper):
+    def __init__(self, formula, data, maxlags=1):
+        super().__init__()
+        self._model = smf.logit(formula, data)
+        self._result = self._model.fit()
+        self._summary = self._result.summary(slim=True)
+        self._formula = formula
+        self._data = data
+
+    def predict(self, *args):
+        return self._model.predict(params=args)
+
+    def classification_table(self, p_cutoff=None, *args):
+        mypred = self.predict(params=args)
+        if not p_cutoff:
+            p_cutoff = numpy_mean(mypred)
+
+        actual = self._data[args]
+        predicted = pd.to_numeric(mypred > p_cutoff)
+        print(f"p cutoff is {p_cutoff}")
+        return pd.merge(actual, predicted)
+
+
+#     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
+#     mypred <- stats::predict(mylogit, newdata = data, type = "response")
+#     if (is.null(p_cutoff)) {
+#         p_cutoff <- mean(mypred)
+#     }
+#     Actual <- data[[myvar]]
+#     Predicted <- as.numeric(mypred > p_cutoff)
+#     Summary <- c("Correct", "Incorrect", "Incorrect", "Correct")
+#     cat("p_cutoff is ", p_cutoff, "\n")
+#     data.frame(Summary, table(Actual, Predicted))
+
+# }
 
 
 def model(name, formula, data, **kwargs):
