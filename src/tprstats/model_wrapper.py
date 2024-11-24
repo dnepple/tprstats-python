@@ -137,6 +137,10 @@ def model(name, formula, data, **kwargs):
                 return TimeSeriesLinearModel(formula, data, maxlags=kwargs["maxlags"])
             else:
                 return TimeSeriesLinearModel(formula, data)
+        case "logit":
+            return LogitModel(formula, data)
+        case "probit":
+            return ProbitModel(formula, data)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
