@@ -82,7 +82,7 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper):
 
 
 class LogitModel(StatsmodelsModelWrapper):
-    def __init__(self, formula, data, maxlags=1):
+    def __init__(self, formula, data):
         super().__init__()
         self._model = smf.logit(formula, data)
         self._result = self._model.fit()
