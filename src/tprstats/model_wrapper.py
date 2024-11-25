@@ -91,7 +91,11 @@ class LogitModel(StatsmodelsModelWrapper):
         self._data = data
 
     def predict(self, *args):
-        return self._model.predict(params=args)
+        if args:
+            return self._result.predict(params=args)
+        else:
+            exog = self._model.exog_names[1:]
+            return self._result.predict(self._data[exog])
 
     def classification_table(self, p_cutoff=None, *args):
         mypred = self.predict(params=args)
