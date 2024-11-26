@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
+from numpy import diagonal
 import pandas as pd
 from statsmodels.api import add_constant
 
@@ -91,27 +92,26 @@ class LogitModel(StatsmodelsModelWrapper):
         self._formula = formula
         self._data = data
 
-    def predict(self, *args):
-        if args:
-            return self._result.predict(params=args)
-        else:
-            Xnew = self._data[self._model.exog_names[1:]]  # exclude intercept
-            Xnew = add_constant(Xnew)
-            return self._result.predict(Xnew)
+    def predict(self, exog=None):
+        return self._result.predict(exog)
 
-    def classification_table(self, p_cutoff=None, *args):
-        if args:
-            mypred = self.predict(params=args)
+    def classification_table(self, p_cutoff=None):
+        if p_cutoff:
+            threshold = p_cutoff
         else:
-            mypred = self.predict()
-        mypred = mypred.rename("PredictedValue")
-        if not p_cutoff:
-            p_cutoff = numpy_mean(mypred)
+            threshold = numpy_mean(self.predict())
 
-        actual = self._data[self._model.exog_names[1:]]
-        predicted = mypred.map(lambda x: x > p_cutoff).rename("predicted")
-        print(f"p cutoff is {p_cutoff}")
-        return pd.concat([actual, mypred, predicted], axis=1)
+        frequency = self._result.pred_table(threshold).flatten().tolist()
+        print(frequency)
+        table = pd.DataFrame(
+            {
+                "Summary": ["Correct", "Incorrect", "Incorrect", "Correct"],
+                "Actual": [0, 0, 1, 1],
+                "Predicted": [0, 1, 0, 1],
+                "Frequency": frequency,
+            }
+        )
+        return table
 
 
 #     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
