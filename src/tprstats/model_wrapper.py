@@ -81,15 +81,7 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper):
         self._data = data
 
 
-class LogitModel(StatsmodelsModelWrapper):
-    def __init__(self, formula, data):
-        super().__init__()
-        self._model = smf.logit(formula, data)
-        self._result = self._model.fit()
-        self._summary = self._result.summary()
-        self._formula = formula
-        self._data = data
-
+class BinaryChoiceMixin:
     def predict(self, exog=None):
         return self._result.predict(exog)
 
@@ -122,7 +114,17 @@ class LogitModel(StatsmodelsModelWrapper):
         return marginal_effects_at_the_mean.summary()
 
 
-class ProbitModel(StatsmodelsModelWrapper):
+class LogitModel(StatsmodelsModelWrapper, BinaryChoiceMixin):
+    def __init__(self, formula, data):
+        super().__init__()
+        self._model = smf.logit(formula, data)
+        self._result = self._model.fit()
+        self._summary = self._result.summary()
+        self._formula = formula
+        self._data = data
+
+
+class ProbitModel(StatsmodelsModelWrapper, BinaryChoiceMixin):
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.logit(formula, data)
