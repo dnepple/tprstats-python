@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
+from statsmodels.api import add_constant
 from numpy import mean as numpy_mean
 import pandas as pd
 
@@ -90,18 +91,23 @@ class LogitModel(StatsmodelsModelWrapper):
         self._formula = formula
         self._data = data
 
-    def predict(self, *args):
-        if args:
-            return self._result.predict(params=args)
+    def predict(self, Xnew=None):
+        if Xnew:
+            self._out_of_sample_prediction(Xnew)
         else:
-            exog = self._model.exog_names[1:]
-            return self._result.predict(self._data[exog])
+            self._in_sample_prediction()
 
-    def classification_table(self, p_cutoff=None, *args):
-        if args:
-            mypred = self.predict(params=args)
-        else:
-            mypred = self.predict()
+    def _out_of_sample_prediction(self, Xnew):
+        # When not using formulas, we must explicitly add the constant term
+        Xnew = add_constant(Xnew)
+        return self._result.predict(Xnew)
+
+    def _in_sample_prediction(self):
+        exog = self._model.exog_names[1:]
+        return self._result.predict(self._data[exog])
+
+    def classification_table(self, p_cutoff=None, Xnew=None):
+        mypred = self.predict(Xnew)
         mypred = mypred.rename("PredictedValue")
         if not p_cutoff:
             p_cutoff = numpy_mean(mypred)
