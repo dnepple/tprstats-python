@@ -59,7 +59,25 @@ class StatsmodelsModelWrapper(ModelWrapper):
         return
 
 
-class CrossSectionalLinearModel(StatsmodelsModelWrapper):
+class LinearModelMixin:
+    def predict(self, exog=None):
+        return self._result.predict(exog)
+
+    def prediction_intervals(self, exog=None, alpha=0.05):
+        predictions = self._result.get_prediction(exog)
+        prediction_table = predictions.summary_frame(alpha=alpha)
+        prediction_table = prediction_table[["mean", "obs_ci_lower", "obs_ci_upper"]]
+        prediction_table = prediction_table.rename(
+            columns={
+                "mean": "Predicted",
+                "obs_ci_lower": "Lower",
+                "obs_ci_upper": "Upper",
+            }
+        )
+        return prediction_table
+
+
+class CrossSectionalLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.ols(formula, data)
@@ -69,7 +87,7 @@ class CrossSectionalLinearModel(StatsmodelsModelWrapper):
         self._data = data
 
 
-class TimeSeriesLinearModel(StatsmodelsModelWrapper):
+class TimeSeriesLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
     def __init__(self, formula, data, maxlags=1):
         super().__init__()
         self._model = smf.ols(formula, data)
