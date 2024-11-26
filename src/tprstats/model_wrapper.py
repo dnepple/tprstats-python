@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
+from numpy import mean as numpy_mean
+import pandas as pd
 
 
 class ModelWrapper(ABC):
@@ -79,6 +81,71 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper):
         self._data = data
 
 
+class LogitModel(StatsmodelsModelWrapper):
+    def __init__(self, formula, data):
+        super().__init__()
+        self._model = smf.logit(formula, data)
+        self._result = self._model.fit()
+        self._summary = self._result.summary()
+        self._formula = formula
+        self._data = data
+
+    def predict(self, exog=None):
+        return self._result.predict(exog)
+
+    def predict_and_rank(self, exog):
+        prospects = exog
+        prospects["PredictionNew"] = self.predict(exog)
+        prospects["ProspectRank"] = prospects["PredictionNew"].rank()
+        return prospects
+
+    def classification_table(self, p_cutoff=None):
+        if p_cutoff:
+            threshold = p_cutoff
+        else:
+            threshold = numpy_mean(self.predict())
+
+        frequency = self._result.pred_table(threshold).flatten().tolist()
+        print(frequency)
+        table = pd.DataFrame(
+            {
+                "Summary": ["Correct", "Incorrect", "Incorrect", "Correct"],
+                "Actual": [0, 0, 1, 1],
+                "Predicted": [0, 1, 0, 1],
+                "Frequency": frequency,
+            }
+        )
+        return table
+
+    def marginal_effects(self):
+        marginal_effects_at_the_mean = self._result.get_margeff(at="overall")
+        return marginal_effects_at_the_mean.summary()
+
+
+#     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
+#     mypred <- stats::predict(mylogit, newdata = data, type = "response")
+#     if (is.null(p_cutoff)) {
+#         p_cutoff <- mean(mypred)
+#     }
+#     Actual <- data[[myvar]]
+#     Predicted <- as.numeric(mypred > p_cutoff)
+#     Summary <- c("Correct", "Incorrect", "Incorrect", "Correct")
+#     cat("p_cutoff is ", p_cutoff, "\n")
+#     data.frame(Summary, table(Actual, Predicted))
+
+# }
+
+
+class ProbitModel(StatsmodelsModelWrapper):
+    def __init__(self, formula, data):
+        super().__init__()
+        self._model = smf.logit(formula, data)
+        self._result = self._model.fit()
+        self._summary = self._result.summary(slim=True)
+        self._formula = formula
+        self._data = data
+
+
 def model(name, formula, data, **kwargs):
     match name:
         case "cs":
@@ -88,6 +155,10 @@ def model(name, formula, data, **kwargs):
                 return TimeSeriesLinearModel(formula, data, maxlags=kwargs["maxlags"])
             else:
                 return TimeSeriesLinearModel(formula, data)
+        case "logit":
+            return LogitModel(formula, data)
+        case "probit":
+            return ProbitModel(formula, data)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
