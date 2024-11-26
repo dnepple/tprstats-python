@@ -122,20 +122,6 @@ class LogitModel(StatsmodelsModelWrapper):
         return marginal_effects_at_the_mean.summary()
 
 
-#     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
-#     mypred <- stats::predict(mylogit, newdata = data, type = "response")
-#     if (is.null(p_cutoff)) {
-#         p_cutoff <- mean(mypred)
-#     }
-#     Actual <- data[[myvar]]
-#     Predicted <- as.numeric(mypred > p_cutoff)
-#     Summary <- c("Correct", "Incorrect", "Incorrect", "Correct")
-#     cat("p_cutoff is ", p_cutoff, "\n")
-#     data.frame(Summary, table(Actual, Predicted))
-
-# }
-
-
 class ProbitModel(StatsmodelsModelWrapper):
     def __init__(self, formula, data):
         super().__init__()
