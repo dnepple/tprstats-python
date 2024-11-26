@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 import pandas as pd
+from statsmodels.api import add_constant
 
 
 class ModelWrapper(ABC):
@@ -94,8 +95,9 @@ class LogitModel(StatsmodelsModelWrapper):
         if args:
             return self._result.predict(params=args)
         else:
-            exog = self._model.exog_names[1:]
-            return self._result.predict(self._data[exog])
+            Xnew = self._data[self._model.exog_names[1:]]  # exclude intercept
+            Xnew = add_constant(Xnew)
+            return self._result.predict(Xnew)
 
     def classification_table(self, p_cutoff=None, *args):
         if args:
