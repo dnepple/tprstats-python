@@ -98,14 +98,18 @@ class LogitModel(StatsmodelsModelWrapper):
             return self._result.predict(self._data[exog])
 
     def classification_table(self, p_cutoff=None, *args):
-        mypred = self.predict(params=args)
+        if args:
+            mypred = self.predict(params=args)
+        else:
+            mypred = self.predict()
+        mypred = mypred.rename("PredictedValue")
         if not p_cutoff:
             p_cutoff = numpy_mean(mypred)
 
-        actual = self._data[args]
-        predicted = pd.to_numeric(mypred > p_cutoff)
+        actual = self._data[self._model.exog_names[1:]]
+        predicted = mypred.map(lambda x: x > p_cutoff).rename("predicted")
         print(f"p cutoff is {p_cutoff}")
-        return pd.merge(actual, predicted)
+        return pd.concat([actual, mypred, predicted], axis=1)
 
 
 #     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
