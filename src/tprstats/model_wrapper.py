@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
-from numpy import diagonal
 import pandas as pd
-from statsmodels.api import add_constant
 
 
 class ModelWrapper(ABC):
