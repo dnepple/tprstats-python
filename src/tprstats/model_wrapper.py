@@ -111,6 +111,10 @@ class LogitModel(StatsmodelsModelWrapper):
         )
         return table
 
+    def marginal_effects(self):
+        marginal_effects_at_the_mean = self._result.get_margeff(at="overall")
+        return marginal_effects_at_the_mean.summary()
+
 
 #     logitClassificationTable <- function(mylogit, myvar, data, p_cutoff = NULL) {
 #     mypred <- stats::predict(mylogit, newdata = data, type = "response")
