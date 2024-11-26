@@ -93,6 +93,12 @@ class LogitModel(StatsmodelsModelWrapper):
     def predict(self, exog=None):
         return self._result.predict(exog)
 
+    def predict_and_rank(self, exog):
+        prospects = exog
+        prospects["PredictionNew"] = self.predict(exog)
+        prospects["ProspectRank"] = prospects["PredictionNew"].rank()
+        return prospects
+
     def classification_table(self, p_cutoff=None):
         if p_cutoff:
             threshold = p_cutoff
