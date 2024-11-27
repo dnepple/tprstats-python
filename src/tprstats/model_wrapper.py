@@ -3,6 +3,9 @@ import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 import pandas as pd
 
+# numpy required for use in patsy formulae
+from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
+
 
 class ModelWrapper(ABC):
     @abstractmethod
