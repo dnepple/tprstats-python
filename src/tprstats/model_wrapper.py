@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
+from numpy import number as numpy_number
+from numpy import concat as numpy_concatenate
 import pandas as pd
+from scipy import stats as scipy_stats
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -78,6 +81,41 @@ class LinearModelMixin:
             }
         )
         return prediction_table
+
+    def standardized_coefficients(self):
+        # standardize data
+        df_z = (
+            self._data.select_dtypes(include=[numpy_number])
+            .dropna()
+            .apply(scipy_stats.zscore)
+        )
+        result = smf.ols(self._formula, data=df_z).fit()
+        # drop 'Intercept
+        return result.params[1:]
+
+    def elasticities(self):
+        # drop 'Intercept' from rhs
+        rhs = self._model.exog_names[1:]
+        lhs = self._model.endog_names
+
+        means = self._data[rhs].mean()
+        y_mean = self._data[lhs].mean()
+        # drop 'Intercept'
+        coefs = self._result.params[1:]
+
+        elasticities = coefs * (means / y_mean)
+
+        return round(elasticities, 4)
+
+    def scaled_coefficients(self):
+        std_coefs = self.standardized_coefficients()
+        elasticities = self.elasticities()
+        # drop 'Intercept'
+        coefs = self._result.params[1:]
+        table = pd.DataFrame(
+            dict(coefs=coefs, std_coefs=std_coefs, elasticities=elasticities)
+        )
+        return table
 
 
 class CrossSectionalLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
