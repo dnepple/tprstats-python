@@ -32,10 +32,12 @@ twine = ">=5.1.1"
 build = "hatch build"
 
 [feature.docs.dependencies]
-Sphinx = ">=7.3.7"
-furo = ">=2023.5.20"
-sphinxcontrib-apidoc = ">=0.3.0"
-myst-parser = ">=2.0.0"
+sphinx = ">=8.1.3,<9"
+myst-nb = ">=1.1.2,<2"
+sphinxcontrib-apidoc = ">=0.3.0,<0.4"
+sphinx-autoapi = ">=3.3.3,<4"
+sphinx_rtd_theme = ">=3.0.1,<4"
+
 [feature.docs.tasks]
 docs = "cd docs && make html "
 readthedocs = "rm -rf $READTHEDOCS_OUTPUT/html && cp -r docs/build/html $READTHEDOCS_OUTPUT/html"
@@ -57,5 +59,5 @@ default = ["py312", "dev"]
 py310 = ["py310", "dev"]
 py311 = ["py311", "dev"]
 py312 = ["py312", "dev"]
-docs = ["docs"]
+docs = ["docs", "dev"]
 release = { features = ["release"], no-default-feature = true }
