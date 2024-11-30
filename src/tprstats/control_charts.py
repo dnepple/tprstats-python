@@ -4,6 +4,15 @@ import pandas as pd
 
 
 def control_chart(mu, sig, n, alpha, data):
+    """plots a control chart for monitoring a production process for a product with a continuous measure (e.g., weight of a package).
+
+    Args:
+        mu (float): The anticipated mean when the production process is working properly.
+        sig (float): The anticipated standard deviation when the process is working properly.
+        n (int): The number of observations per sample.
+        alpha (float): The significance level.
+        data (Dataframe): The dataframe to be plotted.
+    """
     ymax = mu + norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
     ymin = mu - norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
     # Calculate control limits
@@ -26,6 +35,14 @@ def control_chart(mu, sig, n, alpha, data):
 
 
 def control_chart_binary(p, n, alpha, data):
+    """Plots a control chart for monitoring a production process for binary outcomes.
+
+    Args:
+        p (float): The target probability for the outcome expressed as a value between 0 and 1.
+        n (int): The number of observations per sample._description_
+        alpha (float): The significance level.
+        data (Dataframe): The dataframe to be plotted.
+    """
     sig = (p * (1 - p)) ** 0.5
     ymax = p + norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
 
