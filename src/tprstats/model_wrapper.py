@@ -67,7 +67,7 @@ class StatsmodelsModelWrapper(ModelWrapper):
         return
 
 
-class LinearModelMixin:
+class LinearModels(StatsmodelsModelWrapper):
     def prediction_intervals(self, exog=None, alpha=0.05):
         predictions = self._result.get_prediction(exog)
         prediction_table = predictions.summary_frame(alpha=alpha)
@@ -117,7 +117,7 @@ class LinearModelMixin:
         return table
 
 
-class CrossSectionalLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
+class CrossSectionalLinearModel(LinearModels):
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.ols(formula, data)
@@ -127,7 +127,7 @@ class CrossSectionalLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
         self._data = data
 
 
-class TimeSeriesLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
+class TimeSeriesLinearModel(LinearModels):
     def __init__(self, formula, data, maxlags=1):
         super().__init__()
         self._model = smf.ols(formula, data)
@@ -139,7 +139,7 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
         self._data = data
 
 
-class BinaryChoiceMixin:
+class BinaryChoiceModels(StatsmodelsModelWrapper):
     def predict_and_rank(self, exog):
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
@@ -169,7 +169,7 @@ class BinaryChoiceMixin:
         return marginal_effects_at_the_mean.summary()
 
 
-class LogitModel(StatsmodelsModelWrapper, BinaryChoiceMixin):
+class LogitModel(BinaryChoiceModels):
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.logit(formula, data)
@@ -179,7 +179,7 @@ class LogitModel(StatsmodelsModelWrapper, BinaryChoiceMixin):
         self._data = data
 
 
-class ProbitModel(StatsmodelsModelWrapper, BinaryChoiceMixin):
+class ProbitModel(BinaryChoiceModels):
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.probit(formula, data)
