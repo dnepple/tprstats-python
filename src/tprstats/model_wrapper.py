@@ -44,6 +44,9 @@ class StatsmodelsModelWrapper(ModelWrapper):
     def formula(self):
         return self._formula
 
+    def predict(self, exog=None):
+        return self._result.predict(exog)
+
     def data(self):
         return self._data
 
@@ -65,9 +68,6 @@ class StatsmodelsModelWrapper(ModelWrapper):
 
 
 class LinearModelMixin:
-    def predict(self, exog=None):
-        return self._result.predict(exog)
-
     def prediction_intervals(self, exog=None, alpha=0.05):
         predictions = self._result.get_prediction(exog)
         prediction_table = predictions.summary_frame(alpha=alpha)
@@ -140,9 +140,6 @@ class TimeSeriesLinearModel(StatsmodelsModelWrapper, LinearModelMixin):
 
 
 class BinaryChoiceMixin:
-    def predict(self, exog=None):
-        return self._result.predict(exog)
-
     def predict_and_rank(self, exog):
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
