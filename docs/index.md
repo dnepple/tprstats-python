@@ -6,7 +6,7 @@
 :hidden:
 
 binary_choice_models.ipynb
-control_charts.ipynb
+plots.ipynb
 linear_models.ipynb
 example.ipynb
 changelog.md
