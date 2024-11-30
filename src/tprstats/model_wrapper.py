@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 from numpy import number as numpy_number
-from numpy import concat as numpy_concatenate
 import pandas as pd
 from scipy import stats as scipy_stats
 
