@@ -10,28 +10,37 @@ from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
 
 class ModelWrapper(ABC):
+    """Defines a uniform interface for interacting with model objects. All model objects should, at a minimum, implement this interface."""
+
     @abstractmethod
     def model(self):
+        """Returns a model."""
         pass
 
     @abstractmethod
     def result(self):
+        """Returns the result of fitting the model."""
         pass
 
     @abstractmethod
     def summary(self):
+        """Return summary statistics for the given model."""
         pass
 
     @abstractmethod
     def formula(self):
+        """Returns the model's formula."""
         pass
 
     @abstractmethod
     def data(self):
+        """Returns the dataframe used to fit the model."""
         pass
 
 
 class StatsmodelsModelWrapper(ModelWrapper):
+    """Wraps models from the statsmodels package."""
+
     def model(self):
         return self._model
 
@@ -51,6 +60,8 @@ class StatsmodelsModelWrapper(ModelWrapper):
         return self._data
 
     def cite(self):
+        """Returns citations for the source of the model."""
+
         citation = "Seabold, Skipper, and Josef Perktold. “statsmodels: Econometric and statistical modeling with python.” Proceedings of the 9th Python in Science Conference. 2010."
         citation_bibtex_entry = """
         @inproceedings{seabold2010statsmodels,
@@ -68,7 +79,10 @@ class StatsmodelsModelWrapper(ModelWrapper):
 
 
 class LinearModels(StatsmodelsModelWrapper):
+    """An abstract class defining general methods for linear models."""
+
     def prediction_intervals(self, exog=None, alpha=0.05):
+        """Returns a table of prediction intervals."""
         predictions = self._result.get_prediction(exog)
         prediction_table = predictions.summary_frame(alpha=alpha)
         prediction_table = prediction_table[["mean", "obs_ci_lower", "obs_ci_upper"]]
@@ -82,6 +96,7 @@ class LinearModels(StatsmodelsModelWrapper):
         return prediction_table
 
     def standardized_coefficients(self):
+        """Returns a table of the standardized coefficients."""
         # standardize data
         df_z = (
             self._data.select_dtypes(include=[numpy_number])
@@ -93,6 +108,7 @@ class LinearModels(StatsmodelsModelWrapper):
         return result.params[1:]
 
     def elasticities(self):
+        """Returns a table of the elasticities."""
         # drop 'Intercept' from rhs
         rhs = self._model.exog_names[1:]
         lhs = self._model.endog_names
@@ -107,6 +123,7 @@ class LinearModels(StatsmodelsModelWrapper):
         return round(elasticities, 4)
 
     def scaled_coefficients(self):
+        """Returns a table of both standardized cofficients and elasticities."""
         std_coefs = self.standardized_coefficients()
         elasticities = self.elasticities()
         # drop 'Intercept'
@@ -118,6 +135,8 @@ class LinearModels(StatsmodelsModelWrapper):
 
 
 class CrossSectionalLinearModel(LinearModels):
+    """A concrete class for cross-sectional linear models."""
+
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.ols(formula, data)
@@ -128,6 +147,8 @@ class CrossSectionalLinearModel(LinearModels):
 
 
 class TimeSeriesLinearModel(LinearModels):
+    """A concrete class for time series linear models."""
+
     def __init__(self, formula, data, maxlags=1):
         super().__init__()
         self._model = smf.ols(formula, data)
@@ -140,6 +161,12 @@ class TimeSeriesLinearModel(LinearModels):
 
 
 class BinaryChoiceModels(StatsmodelsModelWrapper):
+    """An abstract class defining general methods for binary choice models.
+
+    Args:
+        StatsmodelsModelWrapper (_type_): _description_
+    """
+
     def predict_and_rank(self, exog):
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
@@ -170,6 +197,8 @@ class BinaryChoiceModels(StatsmodelsModelWrapper):
 
 
 class LogitModel(BinaryChoiceModels):
+    """A concrete class for Logit Models."""
+
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.logit(formula, data)
@@ -180,6 +209,8 @@ class LogitModel(BinaryChoiceModels):
 
 
 class ProbitModel(BinaryChoiceModels):
+    """A concrete class for Probit Models."""
+
     def __init__(self, formula, data):
         super().__init__()
         self._model = smf.probit(formula, data)
@@ -190,6 +221,19 @@ class ProbitModel(BinaryChoiceModels):
 
 
 def model(name, formula, data, **kwargs):
+    """A factory function for constructing models based on the name param.
+
+    Args:
+        name (str): _description_
+        formula (formula_like): _description_
+        data (Dataframe): A data
+
+    Raises:
+        ValueError: Raises when the name value is not recognized.
+
+    Returns:
+        ModelWrapper: A model object.
+    """
     match name:
         case "cs":
             return CrossSectionalLinearModel(formula, data)
