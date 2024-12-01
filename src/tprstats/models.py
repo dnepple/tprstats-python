@@ -9,7 +9,7 @@ from scipy import stats as scipy_stats
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
 
-class ModelWrapper(ABC):
+class _ModelWrapper(ABC):
     """Defines a uniform interface for interacting with model objects. All model objects should, at a minimum, implement this interface."""
 
     @abstractmethod
@@ -38,7 +38,7 @@ class ModelWrapper(ABC):
         pass
 
 
-class StatsmodelsModelWrapper(ModelWrapper):
+class _StatsmodelsModelWrapper(_ModelWrapper):
     """Wraps models from the statsmodels package."""
 
     def model(self):
@@ -78,7 +78,7 @@ class StatsmodelsModelWrapper(ModelWrapper):
         return
 
 
-class LinearModels(StatsmodelsModelWrapper):
+class _LinearModels(_StatsmodelsModelWrapper):
     """An abstract class defining general methods for linear models."""
 
     def prediction_intervals(self, exog=None, alpha=0.05):
@@ -134,7 +134,7 @@ class LinearModels(StatsmodelsModelWrapper):
         return table
 
 
-class CrossSectionalLinearModel(LinearModels):
+class CrossSectionalLinearModel(_LinearModels):
     """A concrete class for cross-sectional linear models."""
 
     def __init__(self, formula, data):
@@ -146,7 +146,7 @@ class CrossSectionalLinearModel(LinearModels):
         self._data = data
 
 
-class TimeSeriesLinearModel(LinearModels):
+class TimeSeriesLinearModel(_LinearModels):
     """A concrete class for time series linear models."""
 
     def __init__(self, formula, data, maxlags=1):
@@ -160,7 +160,7 @@ class TimeSeriesLinearModel(LinearModels):
         self._data = data
 
 
-class BinaryChoiceModels(StatsmodelsModelWrapper):
+class _BinaryChoiceModels(_StatsmodelsModelWrapper):
     """An abstract class defining general methods for binary choice models."""
 
     def predict_and_rank(self, exog):
@@ -192,7 +192,7 @@ class BinaryChoiceModels(StatsmodelsModelWrapper):
         return marginal_effects_at_the_mean.summary()
 
 
-class LogitModel(BinaryChoiceModels):
+class LogitModel(_BinaryChoiceModels):
     """A concrete class for Logit Models."""
 
     def __init__(self, formula, data):
@@ -204,7 +204,7 @@ class LogitModel(BinaryChoiceModels):
         self._data = data
 
 
-class ProbitModel(BinaryChoiceModels):
+class ProbitModel(_BinaryChoiceModels):
     """A concrete class for Probit Models."""
 
     def __init__(self, formula, data):
