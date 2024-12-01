@@ -221,7 +221,7 @@ def model(name, formula, data, **kwargs):
 
     Args:
         name (str): Name of model to be constructed.
-        formula (formula_like): Formula used to construct the object.
+        formula (formula_like): Formula used to construct the model object.
         data (Dataframe): Data to fit the model.
 
     Raises:
