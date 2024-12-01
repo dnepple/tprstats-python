@@ -5,4 +5,4 @@ from importlib.metadata import version
 __version__ = version("tprstats")
 
 from .model_wrapper import model
-from .control_charts import control_chart, control_chart_binary
+from .plots import control_chart, control_chart_binary
