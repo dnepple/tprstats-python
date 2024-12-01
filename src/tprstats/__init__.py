@@ -1,4 +1,4 @@
-__all__ = ["lm", "summary", "model", "control_chart", "control_chart_binary"]
+__all__ = ["model", "control_chart", "control_chart_binary"]
 # read version from installed package
 from importlib.metadata import version
 
