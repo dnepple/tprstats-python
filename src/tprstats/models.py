@@ -161,11 +161,7 @@ class TimeSeriesLinearModel(LinearModels):
 
 
 class BinaryChoiceModels(StatsmodelsModelWrapper):
-    """An abstract class defining general methods for binary choice models.
-
-    Args:
-        StatsmodelsModelWrapper (_type_): _description_
-    """
+    """An abstract class defining general methods for binary choice models."""
 
     def predict_and_rank(self, exog):
         prospects = exog
@@ -224,9 +220,9 @@ def model(name, formula, data, **kwargs):
     """A factory function for constructing models based on the name param.
 
     Args:
-        name (str): _description_
-        formula (formula_like): _description_
-        data (Dataframe): A data
+        name (str): Name of model to be constructed.
+        formula (formula_like): Formula used to construct the object.
+        data (Dataframe): Data to fit the model.
 
     Raises:
         ValueError: Raises when the name value is not recognized.
