@@ -147,3 +147,5 @@ dmypy.json
 # pixi environments
 .pixi
 *.egg-info
+.jupyter/desktop-settings.json
+.jupyter/desktop-workspaces/default-37a8.jupyterlab-workspace
