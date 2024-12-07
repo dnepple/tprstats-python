@@ -1,6 +1,8 @@
 from scipy.stats import norm
 import matplotlib.pyplot as plt
 import pandas as pd
+from numpy import arange
+import statsmodels.api as sm
 
 
 def control_chart(mu, sig, n, alpha, data):
@@ -62,4 +64,39 @@ def control_chart_binary(p, n, alpha, data):
     plt.title("Control Chart - Binary Variable")
     plt.xlabel("Observation Number")
     plt.ylabel("Sample Means")
+    plt.show()
+
+
+def _plot_actual_fitted(linmod, data, column_name):
+    # Get predictions and prediction intervals
+    X = sm.add_constant(data.drop(columns=[column_name]))
+    Pred_and_PI = linmod.result().get_prediction(X).summary_frame(alpha=0.05)
+    predicted = Pred_and_PI["mean"]
+    lower = Pred_and_PI["obs_ci_lower"]
+    upper = Pred_and_PI["obs_ci_upper"]
+    # Extract the actual values
+    y = data[column_name].values
+    plot_actual_predicted_PI(y, column_name, predicted, upper, lower, data)
+
+
+def plot_actual_predicted_PI(y, y_id, predicted, upper, lower, data):
+    Observation = arange(1, len(data) + 1)
+
+    # Determine the y-axis limits
+    ymax = max(upper + 0.5)
+    ymin = min(lower - 0.5)
+
+    # Plot actual values, predicted values, and prediction intervals
+    plt.figure(figsize=(10, 6))
+    plt.scatter(Observation, y, color="black", label="Actual", s=20)
+    plt.plot(Observation, y, color="black")
+    plt.plot(Observation, predicted, color="red", label="Predicted")
+    plt.plot(Observation, upper, color="blue", label="95% PI")
+    plt.plot(Observation, lower, color="blue")
+
+    plt.ylim(ymin, ymax)
+    plt.xlabel("Observation")
+    plt.ylabel(y_id)
+    plt.title("Actual (black), Predicted (red), and 95% PI (blue)")
+    plt.legend()
     plt.show()
