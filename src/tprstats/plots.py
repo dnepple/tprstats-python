@@ -67,8 +67,8 @@ def control_chart_binary(p, n, alpha, data):
     plt.show()
 
 
-def _plot_actual_fitted(y, y_id, predicted, upper, lower, data):
-    Observation = arange(1, len(data) + 1)
+def _plot_actual_fitted(y, y_id, predicted, upper, lower):
+    Observation = arange(1, len(y) + 1)
 
     # Determine the y-axis limits
     ymax = max(upper + 0.5)

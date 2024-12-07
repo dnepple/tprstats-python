@@ -142,7 +142,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
         predicted = Pred_and_PI["mean"]
         lower = Pred_and_PI["obs_ci_lower"]
         upper = Pred_and_PI["obs_ci_upper"]
-        _plot_actual_fitted(y, y_id, predicted, upper, lower, self._data)
+        _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
 
 class CrossSectionalLinearModel(_LinearModels):
