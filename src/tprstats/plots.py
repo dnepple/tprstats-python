@@ -40,7 +40,7 @@ def control_chart_binary(p, n, alpha, data):
 
     Args:
         p (float): The target probability for the outcome expressed as a value between 0 and 1.
-        n (int): The number of observations per sample._description_
+        n (int): The number of observations per sample.
         alpha (float): The significance level.
         data (Dataframe): The dataframe to be plotted.
     """
