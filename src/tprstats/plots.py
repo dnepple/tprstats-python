@@ -2,7 +2,6 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 import pandas as pd
 from numpy import arange
-import statsmodels.api as sm
 
 
 def control_chart(mu, sig, n, alpha, data):
