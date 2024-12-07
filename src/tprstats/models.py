@@ -135,6 +135,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
         return table
 
     def plot_actual_fitted(self):
+        """Plots actual values and predicted values with upper and lower prediction intervals for associated linear model."""
         y_id = self._model.endog_names
         y = self._data[y_id]
         X = self._data[self._model.exog_names[1:]]

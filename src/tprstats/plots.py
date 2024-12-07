@@ -68,6 +68,15 @@ def control_chart_binary(p, n, alpha, data):
 
 
 def _plot_actual_fitted(y, y_id, predicted, upper, lower):
+    """Plots actual values and predicted values with upper and lower prediction intervals. Does not depend on a particular linear model implementaiton.
+
+    Args:
+        y: Actual observed values.
+        y_id: y label for graph.
+        predicted: Predicted values.
+        upper: Upper prediction intervals.
+        lower: Lower prediction intervals.
+    """
     Observation = arange(1, len(y) + 1)
 
     # Determine the y-axis limits
