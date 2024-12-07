@@ -1,6 +1,8 @@
 from scipy.stats import norm
 import matplotlib.pyplot as plt
 import pandas as pd
+from numpy import arange
+import statsmodels.api as sm
 
 
 def control_chart(mu, sig, n, alpha, data):
@@ -62,4 +64,36 @@ def control_chart_binary(p, n, alpha, data):
     plt.title("Control Chart - Binary Variable")
     plt.xlabel("Observation Number")
     plt.ylabel("Sample Means")
+    plt.show()
+
+
+def _plot_actual_fitted(y, y_id, predicted, upper, lower):
+    """Plots actual values and predicted values with upper and lower prediction intervals. Does not depend on a particular linear model implementaiton.
+
+    Args:
+        y: Actual observed values.
+        y_id: y label for graph.
+        predicted: Predicted values.
+        upper: Upper prediction intervals.
+        lower: Lower prediction intervals.
+    """
+    Observation = arange(1, len(y) + 1)
+
+    # Determine the y-axis limits
+    ymax = max(upper + 0.5)
+    ymin = min(lower - 0.5)
+
+    # Plot actual values, predicted values, and prediction intervals
+    plt.figure(figsize=(10, 6))
+    plt.scatter(Observation, y, color="black", label="Actual", s=20)
+    plt.plot(Observation, y, color="black")
+    plt.plot(Observation, predicted, color="red", label="Predicted")
+    plt.plot(Observation, upper, color="blue", label="95% PI")
+    plt.plot(Observation, lower, color="blue")
+
+    plt.ylim(ymin, ymax)
+    plt.xlabel("Observation")
+    plt.ylabel(y_id)
+    plt.title("Actual (black), Predicted (red), and 95% PI (blue)")
+    plt.legend()
     plt.show()

@@ -4,6 +4,7 @@ from numpy import mean as numpy_mean
 from numpy import number as numpy_number
 import pandas as pd
 from scipy import stats as scipy_stats
+from .plots import _plot_actual_fitted
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -132,6 +133,17 @@ class _LinearModels(_StatsmodelsModelWrapper):
             dict(coefs=coefs, std_coefs=std_coefs, elasticities=elasticities)
         )
         return table
+
+    def plot_actual_fitted(self):
+        """Plots actual values and predicted values with upper and lower prediction intervals for associated linear model."""
+        y_id = self._model.endog_names
+        y = self._data[y_id]
+        X = self._data[self._model.exog_names[1:]]
+        Pred_and_PI = self._result.get_prediction(X).summary_frame(alpha=0.05)
+        predicted = Pred_and_PI["mean"]
+        lower = Pred_and_PI["obs_ci_lower"]
+        upper = Pred_and_PI["obs_ci_upper"]
+        _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
 
 class CrossSectionalLinearModel(_LinearModels):
