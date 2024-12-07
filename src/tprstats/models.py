@@ -4,7 +4,7 @@ from numpy import mean as numpy_mean
 from numpy import number as numpy_number
 import pandas as pd
 from scipy import stats as scipy_stats
-from .plots import plot_actual_predicted_PI
+from .plots import _plot_actual_fitted
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -142,7 +142,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
         predicted = Pred_and_PI["mean"]
         lower = Pred_and_PI["obs_ci_lower"]
         upper = Pred_and_PI["obs_ci_upper"]
-        plot_actual_predicted_PI(y, y_id, predicted, upper, lower, self._data)
+        _plot_actual_fitted(y, y_id, predicted, upper, lower, self._data)
 
 
 class CrossSectionalLinearModel(_LinearModels):

@@ -67,19 +67,7 @@ def control_chart_binary(p, n, alpha, data):
     plt.show()
 
 
-def _plot_actual_fitted(linmod, data, column_name):
-    # Get predictions and prediction intervals
-    X = sm.add_constant(data.drop(columns=[column_name]))
-    Pred_and_PI = linmod.result().get_prediction(X).summary_frame(alpha=0.05)
-    predicted = Pred_and_PI["mean"]
-    lower = Pred_and_PI["obs_ci_lower"]
-    upper = Pred_and_PI["obs_ci_upper"]
-    # Extract the actual values
-    y = data[column_name].values
-    plot_actual_predicted_PI(y, column_name, predicted, upper, lower, data)
-
-
-def plot_actual_predicted_PI(y, y_id, predicted, upper, lower, data):
+def _plot_actual_fitted(y, y_id, predicted, upper, lower, data):
     Observation = arange(1, len(data) + 1)
 
     # Determine the y-axis limits
