@@ -145,6 +145,17 @@ class _LinearModels(_StatsmodelsModelWrapper):
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
+    def wald_test(self, hypothesis):
+        """Test for linear relationships among multiple coefficients.
+
+        Args:
+            hypothesis: The test hypothesis.
+
+        Returns:
+            : Wald test result.
+        """
+        return self._result.wald_test(hypothesis)
+
 
 class CrossSectionalLinearModel(_LinearModels):
     """A concrete class for cross-sectional linear models."""
