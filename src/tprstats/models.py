@@ -5,6 +5,7 @@ from numpy import number as numpy_number
 import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
+from statsmodels.stats.diagnostic import linear_reset
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -155,6 +156,26 @@ class _LinearModels(_StatsmodelsModelWrapper):
             : Wald test result.
         """
         return self._result.wald_test(hypothesis)
+
+    def ramsey_test(self):
+        """The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
+
+        Power nomenclature is different in Python's statsmodels and R. For example, the ramsey test in Python with power=2 gives the same result as the ramsey test in R with power=1 such that `power + 1` in Python gives the same results as `power` in R.
+
+        Returns:
+            : Frame with columns [power, pvalue]
+        """
+        pvalues = [
+            {
+                "power": 2,
+                "pvalue": linear_reset(self._result, use_f=True, power=2).pvalue,
+            },
+            {
+                "power": 3,
+                "pvalue": linear_reset(self._result, use_f=True, power=3).pvalue,
+            },
+        ]
+        return pd.DataFrame(pvalues)
 
 
 class CrossSectionalLinearModel(_LinearModels):
