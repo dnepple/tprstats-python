@@ -160,7 +160,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
     def ramsey_test(self):
         """The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
 
-        Power nomenclature is different in Python's statsmodels and R. For example, the ramsey test in Python with power=2 gives the same result as the ramsey test in R with power=1 such that `power + 1` in Python gives the same results as `power` in R.
+        Power nomenclature is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
 
         Returns:
             : Frame with columns [power, pvalue]
