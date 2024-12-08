@@ -153,26 +153,29 @@ class _LinearModels(_StatsmodelsModelWrapper):
             hypothesis: The test hypothesis.
 
         Returns:
-            : Wald test result.
+            : P-value
         """
-        return self._result.wald_test(hypothesis)
+        # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
+        # To get the future behavior now, set scalar to True.
+        return self._result.wald_test(hypothesis, scalar=True).pvalue
 
     def ramsey_test(self):
-        """The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
+        """Model specification test used to test functional form. The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
 
         Power nomenclature is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
 
         Returns:
             : Frame with columns [power, pvalue]
         """
+        fit = self._model.fit()
         pvalues = [
             {
                 "power": 2,
-                "pvalue": linear_reset(self._result, use_f=True, power=2).pvalue,
+                "pvalue": linear_reset(fit, use_f=True, power=2).pvalue,
             },
             {
                 "power": 3,
-                "pvalue": linear_reset(self._result, use_f=True, power=3).pvalue,
+                "pvalue": linear_reset(fit, use_f=True, power=3).pvalue,
             },
         ]
         return pd.DataFrame(pvalues)
