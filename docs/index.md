@@ -8,7 +8,5 @@
 models.ipynb
 plots.ipynb
 changelog.md
-contributing.md
-conduct.md
 autoapi/index
 ```
