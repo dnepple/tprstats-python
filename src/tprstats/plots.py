@@ -103,9 +103,9 @@ def plot_3D(x_label, y_label, z_label, data, elev=10, azim=45):
     """Plots a 3D scatterplot with regression plane.
 
     Args:
-        x_label: The x_label. Much match the dataframe.
-        y_label: The y_label. Much match the dataframe.
-        z_label: The z_label. Much match the dataframe.
+        x_label: The x_label. Must match the dataframe.
+        y_label: The y_label. Must match the dataframe.
+        z_label: The z_label. Must match the dataframe.
         data: The dataframe.
         elev (int, optional): Elevation view angle. Defaults to 10.
         azim (int, optional): Azimuth view angle. Defaults to 45.
