@@ -242,7 +242,7 @@ class _BinaryChoiceModels(_StatsmodelsModelWrapper):
         return marginal_effects_at_the_mean.summary()
 
     def wald_test(self, hypothesis):
-        wald_test = self._result.wald_test(hypothesis=hypothesis, scalar=True)
+        wald_test = self._result.wald_test(r_matrix=hypothesis, scalar=True)
         print("Wald Test Statistic: ", wald_test.statistic)
         print("p-value: ", wald_test.pvalue)
         return
