@@ -241,6 +241,12 @@ class _BinaryChoiceModels(_StatsmodelsModelWrapper):
         marginal_effects_at_the_mean = self._result.get_margeff(at="overall")
         return marginal_effects_at_the_mean.summary()
 
+    def wald_test(self, hypothesis):
+        wald_test = self._result.wald_test(hypothesis=hypothesis, scalar=True)
+        print("Wald Test Statistic: ", wald_test.statistic)
+        print("p-value: ", wald_test.pvalue)
+        return
+
 
 class LogitModel(_BinaryChoiceModels):
     """A concrete class for Logit Models."""
