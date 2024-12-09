@@ -14,7 +14,7 @@ $ pip install tprstats
 
 ## License
 
-`tprstats` was created by Stephen Epple. It is licensed under the terms of the MIT license.
+`tprstats` was created by Stephen Epple and Dennis Epple. It is licensed under the terms of the MIT license.
 
 ## Credits
 
