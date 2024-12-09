@@ -4,9 +4,7 @@ Statistical methods and applications for students at the Tepper School of Busine
 
 ## Installation
 
-```bash
-$ pip install tprstats
-```
+- TODO
 
 ## Usage
 
@@ -14,7 +12,7 @@ $ pip install tprstats
 
 ## License
 
-`tprstats` was created by Stephen Epple. It is licensed under the terms of the MIT license.
+`tprstats` was created by Stephen Epple and Dennis Epple. It is licensed under the terms of the MIT license.
 
 ## Credits
 
