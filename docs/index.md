@@ -7,6 +7,7 @@
 
 models.ipynb
 plots.ipynb
+formula.ipynb
 changelog.md
 autoapi/index
 ```
