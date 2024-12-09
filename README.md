@@ -4,9 +4,7 @@ Statistical methods and applications for students at the Tepper School of Busine
 
 ## Installation
 
-```bash
-$ pip install tprstats
-```
+- TODO
 
 ## Usage
 
