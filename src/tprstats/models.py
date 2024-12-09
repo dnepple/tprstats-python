@@ -157,7 +157,10 @@ class _LinearModels(_StatsmodelsModelWrapper):
         """
         # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
         # To get the future behavior now, set scalar to True.
-        return self._result.wald_test(hypothesis, scalar=True).pvalue
+        wald_test = self._result.wald_test(hypothesis, use_f=True, scalar=True)
+        print("Wald Test Statistic: ", wald_test.statistic)
+        print("p-value: ", wald_test.pvalue)
+        return
 
     def ramsey_test(self):
         """Model specification test used to test functional form. The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
