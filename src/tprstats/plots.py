@@ -2,6 +2,8 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 import pandas as pd
 from numpy import arange, linspace, meshgrid
+import numpy as np
+from scipy import stats
 from statsmodels.api import OLS, add_constant
 
 
@@ -165,4 +167,42 @@ def plot_3D(x_label, y_label, z_label, data, elev=10, azim=45):
     ax.view_init(elev=elev, azim=azim)
 
     plt.legend()
+    plt.show()
+
+
+def hist_CI(data, alpha=0.1, bins=20):
+    """Histogram and confidence interval for a set of data.
+
+    Args:
+        data: The data.
+        alpha (float, optional): Significance level. Defaults to 0.1.
+        bins (int, optional): Number of histogram bins. Defaults to 20.
+    """
+    # Plot the histogram
+    plt.hist(
+        data,
+        bins=bins,
+        alpha=0.6,
+        color="#4DBEEE",
+        edgecolor="black",
+        linewidth=0.5,
+        density=True,
+    )
+
+    ci_lower = np.quantile(data, alpha / 2)
+    ci_upper = np.quantile(data, 1 - alpha / 2)
+
+    # Add the confidence intervals as lines
+    plt.axvline(ci_lower, color="r", linestyle="--", label=f"CI Lower: {ci_lower:.2f}")
+    plt.axvline(ci_upper, color="r", linestyle="--", label=f"CI Upper: {ci_upper:.2f}")
+
+    # Add labels and legend
+    plt.xlabel("Data and (1-alpha)% Confidence Interval")
+    plt.ylabel("Frequency")
+    mean = round(np.mean(data), 3)
+    txt = f"Alpha={alpha} and mean={mean}"
+    plt.text(0.5, -0.05, txt, ha="center")
+    plt.legend()
+
+    # Show the plot
     plt.show()
