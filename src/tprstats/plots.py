@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from numpy import arange, linspace, meshgrid
 import numpy as np
-from scipy import stats
 from statsmodels.api import OLS, add_constant
 
 
