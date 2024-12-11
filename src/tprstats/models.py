@@ -5,6 +5,7 @@ from numpy import number as numpy_number
 import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
+import numpy as np
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -144,6 +145,18 @@ class _LinearModels(_StatsmodelsModelWrapper):
         lower = Pred_and_PI["obs_ci_lower"]
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
+
+    def get_coefficients_and_covariance(self):
+        result = self._result
+        coefs = result.params
+        cov_matrix = result.cov_params()
+        combined = np.column_stack((coefs, cov_matrix))
+        lhs = self._model.endog_names
+        rhs = self._model.exog_names  # keep Intercept
+        column_labels = [lhs, *rhs]
+        table = pd.DataFrame(combined, columns=column_labels)
+        table.insert(0, "labels", rhs)
+        return table
 
 
 class CrossSectionalLinearModel(_LinearModels):
