@@ -151,12 +151,11 @@ class _LinearModels(_StatsmodelsModelWrapper):
         coefs = result.params
         cov_matrix = result.cov_params()
         combined = np.column_stack((coefs, cov_matrix))
-        lhs = self._model.endog_names
         rhs = self._model.exog_names  # keep Intercept
-        column_labels = [lhs, *rhs]
-        table = pd.DataFrame(combined, columns=column_labels)
-        table.insert(0, "labels", rhs)
-        return table
+        table = pd.DataFrame(combined, columns=["coefs", *rhs])
+        table.insert(0, "", rhs)
+        print(table)
+        return (coefs, cov_matrix)
 
 
 class CrossSectionalLinearModel(_LinearModels):
