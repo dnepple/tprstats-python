@@ -5,6 +5,7 @@ from numpy import number as numpy_number
 import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
+from statsmodels.stats.diagnostic import linear_reset
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -145,6 +146,43 @@ class _LinearModels(_StatsmodelsModelWrapper):
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
+    def wald_test(self, hypothesis):
+        """Test for linear relationships among multiple coefficients.
+
+        Args:
+            hypothesis: The test hypothesis.
+
+        Returns:
+            : P-value
+        """
+        # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
+        # To get the future behavior now, set scalar to True.
+        wald_test = self._result.wald_test(r_matrix=hypothesis, use_f=True, scalar=True)
+        print("Wald Test Statistic: ", wald_test.statistic)
+        print("p-value: ", wald_test.pvalue)
+        return
+
+    def ramsey_test(self):
+        """Model specification test used to test functional form. The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
+
+        Power nomenclature is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
+
+        Returns:
+            : Frame with columns [power, pvalue]
+        """
+        fit = self._model.fit()
+        pvalues = [
+            {
+                "power": 2,
+                "pvalue": linear_reset(fit, use_f=True, power=2).pvalue,
+            },
+            {
+                "power": 3,
+                "pvalue": linear_reset(fit, use_f=True, power=3).pvalue,
+            },
+        ]
+        return pd.DataFrame(pvalues)
+
 
 class CrossSectionalLinearModel(_LinearModels):
     """A concrete class for cross-sectional linear models."""
@@ -202,6 +240,12 @@ class _BinaryChoiceModels(_StatsmodelsModelWrapper):
     def marginal_effects(self):
         marginal_effects_at_the_mean = self._result.get_margeff(at="overall")
         return marginal_effects_at_the_mean.summary()
+
+    def wald_test(self, hypothesis):
+        wald_test = self._result.wald_test(r_matrix=hypothesis, scalar=True)
+        print("Wald Test Statistic: ", wald_test.statistic)
+        print("p-value: ", wald_test.pvalue)
+        return
 
 
 class LogitModel(_BinaryChoiceModels):
