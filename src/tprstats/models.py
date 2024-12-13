@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 from numpy import number as numpy_number
+from numpy import random as np_random
 from numpy import column_stack
 import pandas as pd
 from scipy import stats as scipy_stats
@@ -194,6 +195,13 @@ class _LinearModels(_StatsmodelsModelWrapper):
         table = pd.DataFrame(combined, columns=["coefs", *rhs])
         table.insert(0, "", rhs)
         return table
+
+    def coefficients_draw(self, size=100000):
+        coefs, cov_matrix = self.coefficients_and_covariance()
+        rng = np_random.default_rng()
+        coef_draws = rng.multivariate_normal(coefs, cov_matrix, size)
+        rhs = self._model.exog_names  # keep Intercept
+        return pd.DataFrame(coef_draws, columns=rhs)
 
 
 class CrossSectionalLinearModel(_LinearModels):
