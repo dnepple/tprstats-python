@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 from numpy import number as numpy_number
+from numpy import column_stack
 import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
-import numpy as np
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -151,7 +151,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
 
     def coefficients_and_covariance_table(self):
         coefs, cov_matrix = self.coefficients_and_covariance()
-        combined = np.column_stack((coefs, cov_matrix))
+        combined = column_stack((coefs, cov_matrix))
         rhs = self._model.exog_names  # keep Intercept
         table = pd.DataFrame(combined, columns=["coefs", *rhs])
         table.insert(0, "", rhs)
