@@ -146,16 +146,16 @@ class _LinearModels(_StatsmodelsModelWrapper):
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
-    def get_coefficients_and_covariance(self):
-        result = self._result
-        coefs = result.params
-        cov_matrix = result.cov_params()
+    def coefficients_and_covariance(self):
+        return (self._result.params, self._result.cov_params())
+
+    def coefficients_and_covariance_table(self):
+        coefs, cov_matrix = self.coefficients_and_covariance()
         combined = np.column_stack((coefs, cov_matrix))
         rhs = self._model.exog_names  # keep Intercept
         table = pd.DataFrame(combined, columns=["coefs", *rhs])
         table.insert(0, "", rhs)
-        print(table)
-        return (coefs, cov_matrix)
+        return table
 
 
 class CrossSectionalLinearModel(_LinearModels):
