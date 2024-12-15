@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 import statsmodels.formula.api as smf
 from numpy import mean as numpy_mean
 from numpy import number as numpy_number
@@ -8,82 +7,14 @@ import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
 from statsmodels.stats.diagnostic import linear_reset
+from statsmodels.formula.api import ols
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
 
-class _ModelWrapper(ABC):
-    """Defines a uniform interface for interacting with model objects. All model objects should, at a minimum, implement this interface."""
-
-    @abstractmethod
-    def model(self):
-        """Returns a model."""
-        pass
-
-    @abstractmethod
-    def result(self):
-        """Returns the result of fitting the model."""
-        pass
-
-    @abstractmethod
-    def summary(self):
-        """Return summary statistics for the given model."""
-        pass
-
-    @abstractmethod
-    def formula(self):
-        """Returns the model's formula."""
-        pass
-
-    @abstractmethod
-    def data(self):
-        """Returns the dataframe used to fit the model."""
-        pass
-
-
-class _StatsmodelsModelWrapper(_ModelWrapper):
-    """Wraps models from the statsmodels package."""
-
-    def model(self):
-        return self._model
-
-    def result(self):
-        return self._result
-
-    def summary(self):
-        return self._summary
-
-    def formula(self):
-        return self._formula
-
-    def predict(self, exog=None):
-        return self._result.predict(exog)
-
-    def data(self):
-        return self._data
-
-    def cite(self):
-        """Returns citations for the source of the model."""
-
-        citation = "Seabold, Skipper, and Josef Perktold. “statsmodels: Econometric and statistical modeling with python.” Proceedings of the 9th Python in Science Conference. 2010."
-        citation_bibtex_entry = """
-        @inproceedings{seabold2010statsmodels,
-        title={statsmodels: Econometric and statistical modeling with python},
-        author={Seabold, Skipper and Perktold, Josef},
-        booktitle={9th Python in Science Conference},
-        year={2010},
-        }
-        """
-        print("Cite statsmodels for scientific publications:")
-        print(citation)
-        print("\nCite statsmodels using bibtex:")
-        print(citation_bibtex_entry)
-        return
-
-
-class _LinearModels(_StatsmodelsModelWrapper):
-    """An abstract class defining general methods for linear models."""
+class LinearModelsMixin:
+    """A mixin class providing additional methods for linear regression."""
 
     def prediction_intervals(self, exog=None, alpha=0.05):
         """Returns a table of prediction intervals."""
@@ -107,7 +38,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
             .dropna()
             .apply(scipy_stats.zscore)
         )
-        result = smf.ols(self._formula, data=df_z).fit()
+        result = smf.ols(self.model.formula, data=df_z).fit()
         # drop 'Intercept
         return result.params[1:]
 
@@ -148,7 +79,7 @@ class _LinearModels(_StatsmodelsModelWrapper):
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
-    def wald_test(self, hypothesis):
+    def wald_testing(self, hypothesis):
         """Test for linear relationships among multiple coefficients.
 
         Args:
@@ -204,7 +135,44 @@ class _LinearModels(_StatsmodelsModelWrapper):
         return pd.DataFrame(coef_draws, columns=rhs)
 
 
-class CrossSectionalLinearModel(_LinearModels):
+class StatsmodelsLinearModelsWrapper(LinearModelsMixin):
+    """Wrapper class for statsmodels RegressionResults."""
+
+    def __init__(self, formula, data, **kwargs):
+        self._model = ols(formula, data)
+        self._data = data
+
+        # cross_section = {"cov_type": "HC1"}
+        # time_series = {"cov_type": "HAC", "maxlags": 1}
+        self._result = self._model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
+
+    def summary(self):
+        return self._result.summary(slim=True)
+
+    def cite(self):
+        """Returns citations for the source of the model."""
+
+        citation = "Seabold, Skipper, and Josef Perktold. “statsmodels: Econometric and statistical modeling with python.” Proceedings of the 9th Python in Science Conference. 2010."
+        citation_bibtex_entry = """
+        @inproceedings{seabold2010statsmodels,
+        title={statsmodels: Econometric and statistical modeling with python},
+        author={Seabold, Skipper and Perktold, Josef},
+        booktitle={9th Python in Science Conference},
+        year={2010},
+        }
+        """
+        print("Cite statsmodels for scientific publications:")
+        print(citation)
+        print("\nCite statsmodels using bibtex:")
+        print(citation_bibtex_entry)
+        return
+
+    def __getattr__(self, name):
+        # Delegates any method calls not explicitly defined here to the wrapped object
+        return getattr(self._result, name)
+
+
+class CrossSectionalLinearModel(LinearModelsMixin):
     """A concrete class for cross-sectional linear models."""
 
     def __init__(self, formula, data):
@@ -216,7 +184,7 @@ class CrossSectionalLinearModel(_LinearModels):
         self._data = data
 
 
-class TimeSeriesLinearModel(_LinearModels):
+class TimeSeriesLinearModel(LinearModelsMixin):
     """A concrete class for time series linear models."""
 
     def __init__(self, formula, data, maxlags=1):
@@ -230,7 +198,7 @@ class TimeSeriesLinearModel(_LinearModels):
         self._data = data
 
 
-class _BinaryChoiceModels(_StatsmodelsModelWrapper):
+class _BinaryChoiceModels:
     """An abstract class defining general methods for binary choice models."""
 
     def predict_and_rank(self, exog):
@@ -308,12 +276,11 @@ def model(name, formula, data, **kwargs):
     """
     match name:
         case "cs":
-            return CrossSectionalLinearModel(formula, data)
+            return StatsmodelsLinearModelsWrapper(formula, data, cov_type="HC1")
         case "ts":
-            if "maxlags" in kwargs:
-                return TimeSeriesLinearModel(formula, data, maxlags=kwargs["maxlags"])
-            else:
-                return TimeSeriesLinearModel(formula, data)
+            return StatsmodelsLinearModelsWrapper(
+                formula=formula, data=data, cov_type="HAC", cov_kwds={"maglags": 1}
+            )
         case "logit":
             return LogitModel(formula, data)
         case "probit":
