@@ -13,16 +13,12 @@ from statsmodels.formula.api import ols
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
 
-class StatsmodelsLinearModelsWrapper:
+class LinearModels:
     """Wrapper class for statsmodels RegressionResults."""
 
     def __init__(self, formula, data, **kwargs):
         self.model = ols(formula, data)
         self.data = data
-
-        # cross_section = {"cov_type": "HC1"}
-        # time_series = {"cov_type": "HAC", "maxlags": 1}
-        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
 
     def summary(self):
         return self.result.summary(slim=True)
@@ -168,8 +164,20 @@ class StatsmodelsLinearModelsWrapper:
         return getattr(self.result, name)
 
 
+class TimeSeriesLinearModel(LinearModels):
+    def __init__(self, formula, data, **kwargs):
+        super().__init__(formula, data, **kwargs)
+        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
+
+
+class CrossSectionLinearModel(LinearModels):
+    def __init__(self, formula, data, **kwargs):
+        super().__init__(formula, data, **kwargs)
+        self.result = self.model.fit(cov_type="HC1")
+
+
 class BinaryChoiceModels:
-    """A mixin class providing additional methods and plots for binary choice models."""
+    """Binary Choice Models."""
 
     def __init__(self, formula, data):
         raise NotImplementedError
@@ -247,11 +255,9 @@ def model(name, formula, data, **kwargs):
     """
     match name:
         case "cs":
-            return StatsmodelsLinearModelsWrapper(formula, data, cov_type="HC1")
+            return CrossSectionLinearModel(formula, data)
         case "ts":
-            return StatsmodelsLinearModelsWrapper(
-                formula=formula, data=data, cov_type="HAC", cov_kwds={"maglags": 1}
-            )
+            return TimeSeriesLinearModel(formula, data)
         case "logit":
             return LogitModel(formula, data)
         case "probit":
