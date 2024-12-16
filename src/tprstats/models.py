@@ -168,8 +168,8 @@ class StatsmodelsLinearModelsWrapper:
         return getattr(self.result, name)
 
 
-class _BinaryChoiceModels:
-    """An abstract class defining general methods for binary choice models."""
+class BinaryChoiceModelsMixin:
+    """A mixin class providing additional methods and plots for binary choice models."""
 
     def predict_and_rank(self, exog):
         prospects = exog
@@ -206,7 +206,7 @@ class _BinaryChoiceModels:
         return
 
 
-class LogitModel(_BinaryChoiceModels):
+class LogitModel(BinaryChoiceModelsMixin):
     """A concrete class for Logit Models."""
 
     def __init__(self, formula, data):
@@ -218,7 +218,7 @@ class LogitModel(_BinaryChoiceModels):
         self._data = data
 
 
-class ProbitModel(_BinaryChoiceModels):
+class ProbitModel(BinaryChoiceModelsMixin):
     """A concrete class for Probit Models."""
 
     def __init__(self, formula, data):
