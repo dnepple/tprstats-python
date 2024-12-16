@@ -168,8 +168,11 @@ class StatsmodelsLinearModelsWrapper:
         return getattr(self.result, name)
 
 
-class BinaryChoiceModelsMixin:
+class BinaryChoiceModels:
     """A mixin class providing additional methods and plots for binary choice models."""
+
+    def __init__(self, formula, data):
+        raise NotImplementedError
 
     def predict_and_rank(self, exog):
         prospects = exog
@@ -183,7 +186,7 @@ class BinaryChoiceModelsMixin:
         else:
             threshold = numpy_mean(self.predict())
 
-        frequency = self._result.pred_table(threshold).flatten().tolist()
+        frequency = self.result.pred_table(threshold).flatten().tolist()
         print(frequency)
         table = pd.DataFrame(
             {
@@ -196,38 +199,36 @@ class BinaryChoiceModelsMixin:
         return table
 
     def marginal_effects(self):
-        marginal_effects_at_the_mean = self._result.get_margeff(at="overall")
+        marginal_effects_at_the_mean = self.result.get_margeff(at="overall")
         return marginal_effects_at_the_mean.summary()
 
-    def wald_test(self, hypothesis):
-        wald_test = self._result.wald_test(r_matrix=hypothesis, scalar=True)
+    def wald_testing(self, hypothesis):
+        wald_test = self.result.wald_test(r_matrix=hypothesis, scalar=True)
         print("Wald Test Statistic: ", wald_test.statistic)
         print("p-value: ", wald_test.pvalue)
         return
 
-
-class LogitModel(BinaryChoiceModelsMixin):
-    """A concrete class for Logit Models."""
-
-    def __init__(self, formula, data):
-        super().__init__()
-        self._model = smf.logit(formula, data)
-        self._result = self._model.fit()
-        self._summary = self._result.summary()
-        self._formula = formula
-        self._data = data
+    def __getattr__(self, name):
+        # Delegates any method calls not explicitly defined here to the wrapped object
+        return getattr(self.result, name)
 
 
-class ProbitModel(BinaryChoiceModelsMixin):
-    """A concrete class for Probit Models."""
+class LogitModel(BinaryChoiceModels):
+    """Logit Model."""
 
     def __init__(self, formula, data):
-        super().__init__()
-        self._model = smf.probit(formula, data)
-        self._result = self._model.fit()
-        self._summary = self._result.summary()
-        self._formula = formula
-        self._data = data
+        self.model = smf.logit(formula, data)
+        self.result = self.model.fit()
+        self.data = data
+
+
+class ProbitModel(BinaryChoiceModels):
+    """Probit Models."""
+
+    def __init__(self, formula, data):
+        self.model = smf.probit(formula, data)
+        self.result = self.model.fit()
+        self.data = data
 
 
 def model(name, formula, data, **kwargs):
