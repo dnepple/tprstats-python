@@ -172,32 +172,6 @@ class StatsmodelsLinearModelsWrapper(LinearModelsMixin):
         return getattr(self._result, name)
 
 
-class CrossSectionalLinearModel(LinearModelsMixin):
-    """A concrete class for cross-sectional linear models."""
-
-    def __init__(self, formula, data):
-        super().__init__()
-        self._model = smf.ols(formula, data)
-        self._result = self._model.fit().get_robustcov_results(cov_type="HC1")
-        self._summary = self._result.summary(slim=True)
-        self._formula = formula
-        self._data = data
-
-
-class TimeSeriesLinearModel(LinearModelsMixin):
-    """A concrete class for time series linear models."""
-
-    def __init__(self, formula, data, maxlags=1):
-        super().__init__()
-        self._model = smf.ols(formula, data)
-        self._result = self._model.fit().get_robustcov_results(
-            cov_type="HAC", maxlags=maxlags
-        )
-        self._summary = self._result.summary(slim=True)
-        self._formula = formula
-        self._data = data
-
-
 class _BinaryChoiceModels:
     """An abstract class defining general methods for binary choice models."""
 
