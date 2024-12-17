@@ -104,7 +104,7 @@ class LinearModels:
         upper = Pred_and_PI["obs_ci_upper"]
         _plot_actual_fitted(y, y_id, predicted, upper, lower)
 
-    def wald_testing(self, hypothesis):
+    def wald_test(self, hypothesis):
         """Test for linear relationships among multiple coefficients.
 
         Args:
@@ -116,8 +116,7 @@ class LinearModels:
         # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
         # To get the future behavior now, set scalar to True.
         wald_test = self.result.wald_test(r_matrix=hypothesis, use_f=True, scalar=True)
-        print("Wald Test Statistic: ", wald_test.statistic)
-        print("p-value: ", wald_test.pvalue)
+        print("p-value: ", round(wald_test.pvalue, 4))
         return
 
     def ramsey_test(self):
