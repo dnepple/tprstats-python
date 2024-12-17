@@ -1,8 +1,13 @@
-from scipy.stats import norm
+from scipy.stats import norm as scipy_norm
 import matplotlib.pyplot as plt
 import pandas as pd
-from numpy import arange, linspace, meshgrid
-import numpy as np
+from numpy import (
+    quantile as np_quantile,
+    mean as np_mean,
+    arange as np_arange,
+    linspace as np_linspace,
+    meshgrid as np_meshgrid,
+)
 from statsmodels.api import OLS, add_constant
 
 
@@ -16,11 +21,11 @@ def control_chart(mu, sig, n, alpha, data):
         alpha (float): The significance level.
         data (Dataframe): The dataframe to be plotted.
     """
-    ymax = mu + norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
-    ymin = mu - norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
+    ymax = mu + scipy_norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
+    ymin = mu - scipy_norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
     # Calculate control limits
-    upper_control_limit = mu + norm.ppf(1 - alpha / 2) * sig / n**0.5
-    lower_control_limit = mu - norm.ppf(1 - alpha / 2) * sig / n**0.5
+    upper_control_limit = mu + scipy_norm.ppf(1 - alpha / 2) * sig / n**0.5
+    lower_control_limit = mu - scipy_norm.ppf(1 - alpha / 2) * sig / n**0.5
 
     # Create a dataframe
     df = pd.DataFrame({"data": data})
@@ -47,11 +52,11 @@ def control_chart_binary(p, n, alpha, data):
         data (Dataframe): The dataframe to be plotted.
     """
     sig = (p * (1 - p)) ** 0.5
-    ymax = p + norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
+    ymax = p + scipy_norm.ppf(1 - alpha / 2) * 1.1 * sig / n**0.5
 
     # Calculate control limits
-    upper_control_limit = p + norm.ppf(1 - alpha / 2) * sig / n**0.5
-    lower_control_limit = p - norm.ppf(1 - alpha / 2) * sig / n**0.5
+    upper_control_limit = p + scipy_norm.ppf(1 - alpha / 2) * sig / n**0.5
+    lower_control_limit = p - scipy_norm.ppf(1 - alpha / 2) * sig / n**0.5
 
     # Create a dataframe
     df = pd.DataFrame({"data": data})
@@ -78,7 +83,7 @@ def _plot_actual_fitted(y, y_id, predicted, upper, lower):
         upper: Upper prediction intervals.
         lower: Lower prediction intervals.
     """
-    Observation = arange(1, len(y) + 1)
+    Observation = np_arange(1, len(y) + 1)
 
     # Determine the y-axis limits
     ymax = max(upper + 0.5)
@@ -123,9 +128,9 @@ def plot_3D(x_label, y_label, z_label, data, elev=10, azim=45):
 
     # Create a grid for predictions
     grid_lines = 26
-    grid_x_pred = linspace(x.min(), x.max(), grid_lines)
-    grid_y_pred = linspace(y.min(), y.max(), grid_lines)
-    grid_x_pred, grid_y_pred = meshgrid(grid_x_pred, grid_y_pred)
+    grid_x_pred = np_linspace(x.min(), x.max(), grid_lines)
+    grid_y_pred = np_linspace(y.min(), y.max(), grid_lines)
+    grid_x_pred, grid_y_pred = np_meshgrid(grid_x_pred, grid_y_pred)
     grid_xy_pred = pd.DataFrame(
         {x_label: grid_x_pred.ravel(), y_label: grid_y_pred.ravel()}
     )
@@ -188,8 +193,8 @@ def hist_CI(data, alpha=0.1, bins=20):
         density=True,
     )
 
-    ci_lower = np.quantile(data, alpha / 2)
-    ci_upper = np.quantile(data, 1 - alpha / 2)
+    ci_lower = np_quantile(data, alpha / 2)
+    ci_upper = np_quantile(data, 1 - alpha / 2)
 
     # Add the confidence intervals as lines
     plt.axvline(ci_lower, color="r", linestyle="--", label=f"CI Lower: {ci_lower:.2f}")
@@ -198,7 +203,7 @@ def hist_CI(data, alpha=0.1, bins=20):
     # Add labels and legend
     plt.xlabel("Data and (1-alpha)% Confidence Interval")
     plt.ylabel("Frequency")
-    mean = round(np.mean(data), 3)
+    mean = round(np_mean(data), 3)
     txt = f"Alpha={alpha} and mean={mean}"
     plt.text(0.5, -0.05, txt, ha="center")
     plt.legend()
