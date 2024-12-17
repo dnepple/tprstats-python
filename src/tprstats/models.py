@@ -1,13 +1,18 @@
-import statsmodels.formula.api as smf
-from numpy import mean as numpy_mean
-from numpy import number as numpy_number
-from numpy import random as np_random
-from numpy import column_stack
+from statsmodels.formula.api import (
+    ols as smf_ols,
+    logit as smf_logit,
+    probit as smf_probit,
+)
+from numpy import (
+    mean as np_mean,
+    number as np_number,
+    random as np_random,
+    column_stack as np_column_stack,
+)
 import pandas as pd
 from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
 from statsmodels.stats.diagnostic import linear_reset
-from statsmodels.formula.api import ols
 
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
@@ -17,7 +22,7 @@ class LinearModels:
     """Wrapper class for statsmodels RegressionResults."""
 
     def __init__(self, formula, data, **kwargs):
-        self.model = ols(formula, data)
+        self.model = smf_ols(formula, data)
         self.data = data
 
     def summary(self):
@@ -59,11 +64,11 @@ class LinearModels:
         """Returns a table of the standardized coefficients."""
         # standardize data
         df_z = (
-            self.data.select_dtypes(include=[numpy_number])
+            self.data.select_dtypes(include=[np_number])
             .dropna()
             .apply(scipy_stats.zscore)
         )
-        result = smf.ols(self.model.formula, data=df_z).fit()
+        result = smf_ols(self.model.formula, data=df_z).fit()
         # drop 'Intercept
         return result.params[1:]
 
@@ -145,7 +150,7 @@ class LinearModels:
 
     def coefficients_and_covariance_table(self):
         coefs, cov_matrix = self.coefficients_and_covariance()
-        combined = column_stack((coefs, cov_matrix))
+        combined = np_column_stack((coefs, cov_matrix))
         rhs = self.model.exog_names  # keep Intercept
         table = pd.DataFrame(combined, columns=["coefs", *rhs])
         table.insert(0, "", rhs)
@@ -193,7 +198,7 @@ class BinaryChoiceModels:
         if p_cutoff:
             threshold = p_cutoff
         else:
-            threshold = numpy_mean(self.predict())
+            threshold = np_mean(self.predict())
 
         frequency = self.result.pred_table(threshold).flatten().tolist()
         print(frequency)
@@ -226,7 +231,7 @@ class LogitModel(BinaryChoiceModels):
     """Logit Model."""
 
     def __init__(self, formula, data):
-        self.model = smf.logit(formula, data)
+        self.model = smf_logit(formula, data)
         self.result = self.model.fit()
         self.data = data
 
@@ -235,7 +240,7 @@ class ProbitModel(BinaryChoiceModels):
     """Probit Models."""
 
     def __init__(self, formula, data):
-        self.model = smf.probit(formula, data)
+        self.model = smf_probit(formula, data)
         self.result = self.model.fit()
         self.data = data
 
