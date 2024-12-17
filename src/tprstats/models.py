@@ -165,9 +165,11 @@ class LinearModels:
 
 
 class TimeSeriesLinearModel(LinearModels):
-    def __init__(self, formula, data, **kwargs):
+    def __init__(self, formula, data, maxlags=2, use_correction=True, **kwargs):
         super().__init__(formula, data, **kwargs)
-        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
+        self.result = self.model.fit().get_robustcov_results(
+            cov_type="HAC", maxlags=maxlags, use_correction=use_correction
+        )
 
 
 class CrossSectionLinearModel(LinearModels):
