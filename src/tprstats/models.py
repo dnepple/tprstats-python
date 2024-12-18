@@ -19,7 +19,7 @@ from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
 
 class LinearModels:
-    """Wrapper class for statsmodels RegressionResults."""
+    """Base class for linear models. This class wraps statsmodels' RegressionResults and provides additional methods relevant to linear models."""
 
     def __init__(self, formula, data, **kwargs):
         self.model = smf_ols(formula, data)
@@ -99,7 +99,7 @@ class LinearModels:
         return table
 
     def plot_actual_fitted(self):
-        """Plots actual values and predicted values with upper and lower prediction intervals for associated linear model."""
+        """Plots actual values and predicted values with upper and lower prediction intervals for the given linear model."""
         y_id = self.model.endog_names
         y = self.data[y_id]
         X = self.data[self.model.exog_names[1:]]
@@ -114,9 +114,6 @@ class LinearModels:
 
         Args:
             hypothesis: The test hypothesis.
-
-        Returns:
-            : P-value
         """
         # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
         # To get the future behavior now, set scalar to True.
@@ -127,7 +124,7 @@ class LinearModels:
     def ramsey_test(self):
         """Model specification test used to test functional form. The Ramsey Test is often called the "Ramsey RESET test" which stands for "Ramsey Regression Equation Specification Error Test."
 
-        Power nomenclature is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
+        Power notation is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
 
         Returns:
             : Frame with columns [power, pvalue]
@@ -183,7 +180,7 @@ class CrossSectionLinearModel(LinearModels):
 
 
 class BinaryChoiceModels:
-    """Binary Choice Models."""
+    """Base class for Binary Choice Models. Provides general methods related to binary choice models."""
 
     def __init__(self, formula, data):
         raise NotImplementedError
@@ -246,7 +243,7 @@ class ProbitModel(BinaryChoiceModels):
 
 
 def model(name, formula, data, **kwargs):
-    """A factory function for constructing models based on the name param.
+    """A factory function for constructing models based on the model's name.
 
     Args:
         name (str): Name of model to be constructed.

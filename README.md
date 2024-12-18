@@ -16,8 +16,7 @@ Statistical methods and applications for students at the Tepper School of Busine
 
 `tprstats` was created by Stephen Epple and Dennis Epple. It is licensed under the terms of the MIT license.
 
-## Credits
-
+## Citations 
 **statsmodels**  
 Skipper, S., & Josef, P. (2010). statsmodels: Econometric and statistical modeling with python. 9th Python in Science Conference
 
@@ -27,4 +26,5 @@ Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with Nu
 **scipy**  
 Pauli Virtanen, Ralf Gommers, Travis E. Oliphant et al. SciPy 1.0 Contributors. (2020) SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17(3), 261-272. DOI: 10.1038/s41592-019-0686-2.  
 
+## Credits
 tprstats was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the [py-pkgs-cookiecutter template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
