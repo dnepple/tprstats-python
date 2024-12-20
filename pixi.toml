@@ -24,6 +24,7 @@ openpyxl = ">=3.1.5,<4"
 ipykernel = ">=6.29.5,<7"
 pip = ">=24.3.1,<25"
 ipympl = ">=0.9.4,<0.10"
+patsy = ">=1.0.1,<2"
 
 [feature.release.dependencies]
 hatch = ">=1.12.0"

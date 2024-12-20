@@ -3,6 +3,8 @@ from statsmodels.formula.api import (
     logit as smf_logit,
     probit as smf_probit,
 )
+from patsy import dmatrices as design_matrices
+from statsmodels.tsa.api import ARIMA as sm_ARIMA, SARIMAX as sm_SARIMAX
 from numpy import (
     mean as np_mean,
     number as np_number,
@@ -242,6 +244,21 @@ class ProbitModel(BinaryChoiceModels):
         self.data = data
 
 
+class ARIMAModel:
+    def __init__(self, formula, data, order=(1, 0, 0), **kwargs):
+        # "-1" prevents patsy from adding a constant to the design matrices
+        self.formula = formula + "-1"
+        self.y, self.X = design_matrices(
+            self.formula, data=data, return_type="dataframe"
+        )
+        self.model = sm_ARIMA(endog=self.y, exog=self.X, order=order, **kwargs)
+        self.result = self.model.fit(method="innovations_mle", **kwargs)
+
+    def __getattr__(self, name):
+        # Delegates any method calls not explicitly defined here to the wrapped object
+        return getattr(self.result, name)
+
+
 def model(name, formula, data, **kwargs):
     """A factory function for constructing models based on the model's name.
 
@@ -265,6 +282,8 @@ def model(name, formula, data, **kwargs):
             return LogitModel(formula, data, **kwargs)
         case "probit":
             return ProbitModel(formula, data, **kwargs)
+        case "arima":
+            return ARIMAModel(formula, data)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
