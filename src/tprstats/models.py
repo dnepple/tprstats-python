@@ -4,7 +4,7 @@ from statsmodels.formula.api import (
     probit as smf_probit,
 )
 from patsy import dmatrices as design_matrices
-from statsmodels.tsa.api import ARIMA as sm_ARIMA, SARIMAX as sm_SARIMAX
+from statsmodels.tsa.api import ARIMA as sm_ARIMA
 from numpy import (
     mean as np_mean,
     number as np_number,
