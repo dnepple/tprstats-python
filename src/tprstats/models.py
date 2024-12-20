@@ -279,11 +279,11 @@ def model(name, formula, data, **kwargs):
         case "ts":
             return TimeSeriesLinearModel(formula, data, **kwargs)
         case "logit":
-            return LogitModel(formula, data, **kwargs)
+            return LogitModel(formula, data)
         case "probit":
-            return ProbitModel(formula, data, **kwargs)
+            return ProbitModel(formula, data)
         case "arima":
-            return ARIMAModel(formula, data)
+            return ARIMAModel(formula, data, **kwargs)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
