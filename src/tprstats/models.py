@@ -166,11 +166,11 @@ class LinearModels:
 
 
 class TimeSeriesLinearModel(LinearModels):
-    def __init__(self, formula, data, maxlags=2, use_correction=True, **kwargs):
+    def __init__(self, formula, data, **kwargs):
+        kwargs.setdefault("maxlags", 2)
+        kwargs.setdefault("use_correction", True)
         super().__init__(formula, data, **kwargs)
-        self.result = self.model.fit().get_robustcov_results(
-            cov_type="HAC", maxlags=maxlags, use_correction=use_correction
-        )
+        self.result = self.model.fit().get_robustcov_results(cov_type="HAC", **kwargs)
 
 
 class CrossSectionLinearModel(LinearModels):
@@ -258,13 +258,13 @@ def model(name, formula, data, **kwargs):
     """
     match name:
         case "cs":
-            return CrossSectionLinearModel(formula, data)
+            return CrossSectionLinearModel(formula, data, **kwargs)
         case "ts":
-            return TimeSeriesLinearModel(formula, data)
+            return TimeSeriesLinearModel(formula, data, **kwargs)
         case "logit":
-            return LogitModel(formula, data)
+            return LogitModel(formula, data, **kwargs)
         case "probit":
-            return ProbitModel(formula, data)
+            return ProbitModel(formula, data, **kwargs)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
