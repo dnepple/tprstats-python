@@ -245,30 +245,14 @@ class ProbitModel(BinaryChoiceModels):
 
 
 class ARIMAModel:
-    def __init__(self, formula, data, order=(1, 0, 0)):
-        self.formula = formula + "-1"
-        print(self.formula)
-        self.y, self.X = design_matrices(
-            self.formula, data=data, return_type="dataframe"
-        )
-        self.model = sm_ARIMA(endog=self.y, exog=self.X, order=order)
-        self.result = self.model.fit()
-
-    def __getattr__(self, name):
-        # Delegates any method calls not explicitly defined here to the wrapped object
-        return getattr(self.result, name)
-
-
-class SARIMAXModel:
-    def __init__(self, formula, data):
-        # "-1" drops the constant term from patsy design matrices
-        # y~x-1-1, patsy only drops the constant term.
+    def __init__(self, formula, data, order=(1, 0, 0), **kwargs):
+        # "-1" prevents patsy from adding a constant to the design matrices
         self.formula = formula + "-1"
         self.y, self.X = design_matrices(
             self.formula, data=data, return_type="dataframe"
         )
-        self.model = sm_SARIMAX(endog=self.y, exog=self.X, order=(1, 0, 0), trend="c")
-        self.result = self.model.fit()
+        self.model = sm_ARIMA(endog=self.y, exog=self.X, order=order, **kwargs)
+        self.result = self.model.fit(method="innovations_mle", **kwargs)
 
     def __getattr__(self, name):
         # Delegates any method calls not explicitly defined here to the wrapped object
@@ -300,8 +284,6 @@ def model(name, formula, data, **kwargs):
             return ProbitModel(formula, data)
         case "arima":
             return ARIMAModel(formula, data)
-        case "sarimax":
-            return SARIMAXModel(formula, data)
         case _:
             msg = f'Model name "{name}" not recognized.'
             print(msg)
