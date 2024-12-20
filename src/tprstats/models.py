@@ -167,7 +167,8 @@ class LinearModels:
 
 class TimeSeriesLinearModel(LinearModels):
     def __init__(self, formula, data, **kwargs):
-        kwargs = {"maxlags": 2, "use_correction": True} | kwargs
+        kwargs.setdefault("maxlags", 2)
+        kwargs.setdefault("use_correction", True)
         super().__init__(formula, data, **kwargs)
         self.result = self.model.fit().get_robustcov_results(cov_type="HAC", **kwargs)
 
