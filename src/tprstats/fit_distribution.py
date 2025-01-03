@@ -25,7 +25,7 @@ distributions = [
 def calculate_aic(dist, data):
     params = dist.fit(data)
     log_likelihood = np.sum(np.log(dist.pdf(data, *params)))
-    aic = 2 * len(params) - 2 * log_likelihood
+    aic = (len(params) - 2 * log_likelihood) / len(data)
     return aic
 
 
