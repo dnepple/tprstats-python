@@ -1,20 +1,15 @@
 import numpy as np
 from scipy import stats
-import pandas as pd
+from pandas import Series
 
-# data = [1, 2, 3, 4, 5]
-# m,s = norm.fit(data)
-# log_likelihood = np.sum(np.log(norm.pdf(data,m,s)))
-
-df = pd.read_csv("../../data/Sample_from_Normal_Distribution.csv")
-thedata = df["x"]
-print(thedata)
-
-distributions = [
+DISTRIBUTIONS = [
     "norm",
     "uniform",
     "t",
     "skewnorm",
+]
+
+POSITIVE_ONLY_DISTRIBUTIONS = [
     "weibull_min",
     "gamma",
     "lognorm",
@@ -22,18 +17,28 @@ distributions = [
 ]
 
 
-def calculate_aic(dist, data):
+def calculate_aic(distribution: str, data):
+    dist = getattr(stats, distribution)
     params = dist.fit(data)
     log_likelihood = np.sum(np.log(dist.pdf(data, *params)))
     aic = (len(params) - 2 * log_likelihood) / len(data)
     return aic
 
 
-def list_aic(distributions, data):
+def list_aic(data):
+    all_aic = {}
+
+    distributions = (
+        DISTRIBUTIONS if data.min() < 0 else DISTRIBUTIONS + POSITIVE_ONLY_DISTRIBUTIONS
+    )
+
     for distribution in distributions:
-        dist = getattr(stats, distribution)
-        aic = calculate_aic(dist, data)
-        print(f"Distribution: {distribution} aic is {aic}.")
+        aic = calculate_aic(distribution, data)
+        all_aic[distribution] = aic
+    return Series(all_aic)
 
 
-list_aic(distributions, thedata)
+def select_distribution(data):
+    all_aic = list_aic(data)
+    best_aic = all_aic.idxmin()
+    return best_aic
