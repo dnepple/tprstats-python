@@ -214,6 +214,14 @@ class BinaryChoiceModels:
         return prospects
 
     def classification_table(self, p_cutoff=None):
+        """Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model's predictive accuracy.
+
+        Args:
+            p_cutoff (number, optional): Predicted probabilities greater than the p_cutoff are classified as 1, and 0 otherwise. If p_cutoff is unspecified, the p_cutoff is set equal to the mean of the predicted probabilities.
+
+        Returns:
+            pandas.DataFrame: The classification table for the associated estimated model.
+        """
         if p_cutoff:
             threshold = p_cutoff
         else:
