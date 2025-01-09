@@ -243,7 +243,7 @@ class BinaryChoiceModels:
         marginal_effects_at_the_mean = self.result.get_margeff(at="overall")
         return marginal_effects_at_the_mean.summary()
 
-    def wald_testing(self, hypothesis):
+    def wald_test_binary(self, hypothesis):
         wald_test = self.result.wald_test(r_matrix=hypothesis, scalar=True)
         print("Wald Test Statistic: ", wald_test.statistic)
         print("p-value: ", wald_test.pvalue)
