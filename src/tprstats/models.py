@@ -145,17 +145,35 @@ class LinearModels:
         return pd.DataFrame(pvalues)
 
     def coefficients_and_covariance(self):
+        """Extracts the coefficients and covariance matrix from a statsmodel regression..
+
+        Returns:
+            Tuple: Returns a tuple containing (coefficients, covariance_matrix)
+        """
         return (self.result.params, self.result.cov_params())
 
-    def coefficients_and_covariance_table(self):
+    def coefficients_and_covariance_frame(self):
+        """Returns a Pandas DataFrame of the cofficients and covariance matrix.
+
+        Returns:
+            pandas.DataFrame: A dataframe containing the cofficients, and covariance matrix.
+        """
         coefs, cov_matrix = self.coefficients_and_covariance()
         combined = np_column_stack((coefs, cov_matrix))
         rhs = self.model.exog_names  # keep Intercept
-        table = pd.DataFrame(combined, columns=["coefs", *rhs])
-        table.insert(0, "", rhs)
-        return table
+        frame = pd.DataFrame(combined, columns=["coefs", *rhs])
+        frame.insert(0, "", rhs)
+        return frame
 
     def coefficients_draw(self, size=100000):
+        """Given a regression model, this function takes a random draw for the coefficients.
+
+        Args:
+            size (int, optional): Number of draws. Defaults to 100000.
+
+        Returns:
+            pandas.DataFrame : Draw(s) from the coefficients.
+        """
         coefs, cov_matrix = self.coefficients_and_covariance()
         rng = np_random.default_rng()
         coef_draws = rng.multivariate_normal(coefs, cov_matrix, size)
@@ -163,7 +181,9 @@ class LinearModels:
         return pd.DataFrame(coef_draws, columns=rhs)
 
     def __getattr__(self, name):
-        # Delegates any method calls not explicitly defined here to the wrapped object
+        """
+        Delegates any method calls not explicitly defined in this wrapper class to the wrapped object
+        """
         return getattr(self.result, name)
 
 
