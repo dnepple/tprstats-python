@@ -165,11 +165,11 @@ class LinearModels:
         frame.insert(0, "", rhs)
         return frame
 
-    def coefficients_draw(self, size=100000):
+    def coefficients_draw(self, size=1):
         """Given a regression model, this function takes a random draw for the coefficients.
 
         Args:
-            size (int, optional): Number of draws. Defaults to 100000.
+            size (int, optional): Number of draws. Defaults to 1.
 
         Returns:
             pandas.DataFrame : Draw(s) from the coefficients.
