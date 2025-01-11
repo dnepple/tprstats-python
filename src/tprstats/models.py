@@ -247,6 +247,11 @@ class BinaryChoiceModels:
         return table
 
     def marginal_effects(self):
+        """Marginal effects at the means (MEM) at each observation.
+
+        Returns:
+            : Marginal effects summary table.
+        """
         marginal_effects_at_the_mean = self.result.get_margeff(at="overall")
         return marginal_effects_at_the_mean.summary()
 
