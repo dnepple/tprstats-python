@@ -63,7 +63,10 @@ class LinearModels:
         return prediction_table
 
     def standardized_coefficients(self):
-        """Returns a table of the standardized coefficients."""
+        """
+        Returns a table of the standardized coefficients.
+        A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+        """
         # standardize data
         df_z = (
             self.data.select_dtypes(include=[np_number])
@@ -75,7 +78,9 @@ class LinearModels:
         return result.params[1:]
 
     def elasticities(self):
-        """Returns a table of the elasticities."""
+        """
+        Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.
+        """
         # drop 'Intercept' from rhs
         rhs = self.model.exog_names[1:]
         lhs = self.model.endog_names
@@ -90,7 +95,11 @@ class LinearModels:
         return round(elasticities, 4)
 
     def scaled_coefficients(self):
-        """Returns a table of both standardized cofficients and elasticities."""
+        """
+        Returns a pandas.Dataframe containing the standardized cofficients (also known as beta weights) and elasticities.
+        A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+        The function reports three columns which contain the coefficients, the standardized coefficients, and the elasticities evaluated at the means of the variables.
+        """
         std_coefs = self.standardized_coefficients()
         elasticities = self.elasticities()
         # drop 'Intercept'
@@ -115,7 +124,7 @@ class LinearModels:
         """Test for linear relationships among multiple coefficients.
 
         Args:
-            hypothesis: The test hypothesis.
+            hypothesis: The test hypothesis specified as a string.
         """
         # Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.
         # To get the future behavior now, set scalar to True.
@@ -129,7 +138,7 @@ class LinearModels:
         Power notation is different in Python's statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.
 
         Returns:
-            : Frame with columns [power, pvalue]
+            pandas.DataFrame : Frame with columns [power, pvalue]
         """
         fit = self.model.fit()
         pvalues = [
@@ -181,9 +190,7 @@ class LinearModels:
         return pd.DataFrame(coef_draws, columns=rhs)
 
     def __getattr__(self, name):
-        """
-        Delegates any method calls not explicitly defined in this wrapper class to the wrapped object
-        """
+        # Delegates any method calls not explicitly defined in this wrapper class to the wrapped object
         return getattr(self.result, name)
 
 
@@ -244,6 +251,7 @@ class BinaryChoiceModels:
         return marginal_effects_at_the_mean.summary()
 
     def wald_test_binary(self, hypothesis):
+        """Prints the Wald test stastistic and p-value for the given hypothesis."""
         wald_test = self.result.wald_test(r_matrix=hypothesis, scalar=True)
         print("Wald Test Statistic: ", wald_test.statistic)
         print("p-value: ", wald_test.pvalue)
@@ -288,7 +296,8 @@ class ARIMAModel:
 
 
 def model(name, formula, data, **kwargs):
-    """A factory function for constructing models based on the model's name.
+    """
+    Constructs a model for the given model name. Valid names are "cs" for cross-sectional linear model, "ts" for time series linear model, "logit" for logit model, "probit" for probit model,  and "arima" for ARIMA model.
 
     Args:
         name (str): Name of model to be constructed.
@@ -299,7 +308,7 @@ def model(name, formula, data, **kwargs):
         ValueError: Raises when the name value is not recognized.
 
     Returns:
-        ModelWrapper: A model object.
+        : A model object for the given model name.
     """
     match name:
         case "cs":
