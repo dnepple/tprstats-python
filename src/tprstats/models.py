@@ -3,7 +3,7 @@ from statsmodels.formula.api import (
     logit as smf_logit,
     probit as smf_probit,
 )
-from statsmodels.api import OLS as sm_OLS
+from statsmodels.api import OLS as sm_OLS, Logit as sm_Logit
 from patsy import dmatrices as design_matrices
 from statsmodels.tsa.api import ARIMA as sm_ARIMA
 from numpy import (
@@ -282,7 +282,8 @@ class LogitModel(BinaryChoiceModels):
     """Logit Model."""
 
     def __init__(self, formula, data):
-        self.model = smf_logit(formula, data)
+        y, X = design_matrices(formula, data=data, return_type="dataframe")
+        self.model = sm_Logit(y, X)
         self.result = self.model.fit()
         self.data = data
 
