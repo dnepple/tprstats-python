@@ -255,7 +255,8 @@ class BinaryChoiceModels:
         return table
 
     def marginal_effects(self):
-        """Marginal effects at the means (MEM) at each observation.
+        """
+        The average change in probability across all observations in the sample when values of a predictor variable increase by one unit and all other predictor variables are held constant.
 
         Returns:
             : Marginal effects summary table.
