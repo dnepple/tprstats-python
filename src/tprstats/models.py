@@ -215,6 +215,14 @@ class BinaryChoiceModels:
         raise NotImplementedError
 
     def predict_and_rank(self, exog):
+        """Predict probabilities from a binary choice model and order probabilities from lowest to highest.
+
+        Args:
+            exog : New explanatory variables.
+
+        Returns:
+            : Predictions by rank.
+        """
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
         prospects["ProspectRank"] = prospects["PredictionNew"].rank()
