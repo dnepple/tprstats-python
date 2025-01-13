@@ -1,9 +1,7 @@
 from statsmodels.formula.api import (
     ols as smf_ols,
-    logit as smf_logit,
-    probit as smf_probit,
 )
-from statsmodels.api import OLS as sm_OLS, Logit as sm_Logit
+from statsmodels.api import OLS as sm_OLS, Logit as sm_Logit, Probit as sm_Probit
 from patsy import dmatrices as design_matrices
 from statsmodels.tsa.api import ARIMA as sm_ARIMA
 from numpy import (
@@ -292,7 +290,8 @@ class ProbitModel(BinaryChoiceModels):
     """Probit Models."""
 
     def __init__(self, formula, data):
-        self.model = smf_probit(formula, data)
+        y, X = design_matrices(formula, data=data, return_type="dataframe")
+        self.model = sm_Probit(y, X)
         self.result = self.model.fit()
         self.data = data
 
