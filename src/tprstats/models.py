@@ -3,6 +3,7 @@ from statsmodels.formula.api import (
     logit as smf_logit,
     probit as smf_probit,
 )
+from statsmodels.api import OLS as sm_OLS
 from patsy import dmatrices as design_matrices
 from statsmodels.tsa.api import ARIMA as sm_ARIMA
 from numpy import (
@@ -24,7 +25,8 @@ class LinearModels:
     """Base class for linear models. This class wraps statsmodels' RegressionResults and provides additional methods relevant to linear models."""
 
     def __init__(self, formula, data, **kwargs):
-        self.model = smf_ols(formula, data)
+        y, X = design_matrices(formula, data=data, return_type="dataframe")
+        self.model = sm_OLS(y, X)
         self.data = data
 
     def summary(self):
