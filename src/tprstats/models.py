@@ -1,6 +1,3 @@
-from statsmodels.formula.api import (
-    ols as smf_ols,
-)
 from statsmodels.api import OLS as sm_OLS, Logit as sm_Logit, Probit as sm_Probit
 from patsy import dmatrices as design_matrices
 from statsmodels.tsa.api import ARIMA as sm_ARIMA
@@ -73,7 +70,8 @@ class LinearModels:
             .dropna()
             .apply(scipy_stats.zscore)
         )
-        result = smf_ols(self.model.formula, data=df_z).fit()
+        y_z, X_z = sm_OLS(self.model.formula, data=df_z, return_type="dataframe")
+        result = sm_OLS(y_z, X_z).fit()
         # drop 'Intercept
         return result.params[1:]
 
