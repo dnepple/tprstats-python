@@ -109,9 +109,9 @@ class LinearModels:
 
     def plot_actual_fitted(self):
         """Plots actual values and predicted values with upper and lower prediction intervals for the given linear model."""
-        y_id = self.model.endog_names
-        y = self.data[y_id]
-        X = self.data[self.model.exog_names[1:]]
+        y_id = self.y.columns[0]
+        y = self.y
+        X = self.X
         Pred_and_PI = self.result.get_prediction(X).summary_frame(alpha=0.05)
         predicted = Pred_and_PI["mean"]
         lower = Pred_and_PI["obs_ci_lower"]
