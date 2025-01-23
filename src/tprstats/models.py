@@ -20,8 +20,8 @@ class LinearModels:
     """Base class for linear models. This class wraps statsmodels' RegressionResults and provides additional methods relevant to linear models."""
 
     def __init__(self, formula, data, **kwargs):
-        y, X = design_matrices(formula, data=data, return_type="dataframe")
-        self.model = sm_OLS(y, X)
+        self.y, self.X = design_matrices(formula, data=data, return_type="dataframe")
+        self.model = sm_OLS(self.y, self.X)
         self.data = data
 
     def summary(self):
@@ -209,8 +209,8 @@ class CrossSectionLinearModel(LinearModels):
 class BinaryChoiceModels:
     """Base class for Binary Choice Models. Provides general methods related to binary choice models."""
 
-    def __init__(self, formula, data):
-        raise NotImplementedError
+    def __init__(self, formula, data, **kwargs):
+        self.y, self.X = design_matrices(formula, data=data, return_type="dataframe")
 
     def predict_and_rank(self, exog):
         """Predict probabilities from a binary choice model and order probabilities from lowest to highest.
@@ -278,8 +278,8 @@ class LogitModel(BinaryChoiceModels):
     """Logit Model."""
 
     def __init__(self, formula, data):
-        y, X = design_matrices(formula, data=data, return_type="dataframe")
-        self.model = sm_Logit(y, X)
+        super().__init__(formula, data)
+        self.model = sm_Logit(self.y, self.X)
         self.result = self.model.fit()
         self.data = data
 
@@ -288,8 +288,8 @@ class ProbitModel(BinaryChoiceModels):
     """Probit Models."""
 
     def __init__(self, formula, data):
-        y, X = design_matrices(formula, data=data, return_type="dataframe")
-        self.model = sm_Probit(y, X)
+        super().__init__(formula, data)
+        self.model = sm_Probit(self.y, self.X)
         self.result = self.model.fit()
         self.data = data
 
