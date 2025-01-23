@@ -23,6 +23,7 @@ class LinearModels:
         self.y, self.X = design_matrices(formula, data=data, return_type="dataframe")
         self.model = sm_OLS(self.y, self.X)
         self.data = data
+        self.formula = formula
 
     def summary(self):
         return self.result.summary(slim=True)
@@ -211,6 +212,7 @@ class BinaryChoiceModels:
 
     def __init__(self, formula, data, **kwargs):
         self.y, self.X = design_matrices(formula, data=data, return_type="dataframe")
+        self.formula = formula
 
     def predict_and_rank(self, exog):
         """Predict probabilities from a binary choice model and order probabilities from lowest to highest.
