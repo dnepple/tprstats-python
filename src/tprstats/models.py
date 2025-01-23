@@ -71,7 +71,7 @@ class LinearModels:
             .dropna()
             .apply(scipy_stats.zscore)
         )
-        y_z, X_z = sm_OLS(self.model.formula, data=df_z, return_type="dataframe")
+        y_z, X_z = design_matrices(self.formula, data=df_z, return_type="dataframe")
         result = sm_OLS(y_z, X_z).fit()
         # drop 'Intercept
         return result.params[1:]
