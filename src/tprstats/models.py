@@ -80,12 +80,9 @@ class LinearModels:
         """
         Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.
         """
-        # drop 'Intercept' from rhs
-        rhs = self.model.exog_names[1:]
-        lhs = self.model.endog_names
-
-        means = self.data[rhs].mean()
-        y_mean = self.data[lhs].mean()
+        X = self.X.drop('Intercept', axis=1)
+        means = X.mean()
+        y_mean = self.y.mean().item()
         # drop 'Intercept'
         coefs = self.result.params[1:]
 
