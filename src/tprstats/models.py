@@ -61,33 +61,26 @@ class LinearModels:
         return prediction_table
 
     def standardized_coefficients(self):
-        """
-        Returns a table of the standardized coefficients.
+        """Returns the standardized coefficients.
         A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+
+        Returns:
+            pandas.Series: Standardized Coefficients
         """
-        # standardize data
-        df_z = (
-            self.data.select_dtypes(include=[np_number])
-            .dropna()
-            .apply(scipy_stats.zscore)
-        )
-        y_z, X_z = design_matrices(self.formula, data=df_z, return_type="dataframe")
-        result = sm_OLS(y_z, X_z).fit()
-        # drop 'Intercept
-        return result.params[1:]
+        standardized_coefs = pd.Series()
+        for col_name, col_data in self.X.items():
+            if col_data.dtype == np_number:
+                standardized_coefs[col_name] = (self.params[col_name] * self.X[col_name].std() / self.y.std()).item()
+        return standardized_coefs.drop('Intercept')
 
     def elasticities(self):
         """
         Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.
         """
-        # drop 'Intercept' from rhs
-        rhs = self.model.exog_names[1:]
-        lhs = self.model.endog_names
-
-        means = self.data[rhs].mean()
-        y_mean = self.data[lhs].mean()
-        # drop 'Intercept'
-        coefs = self.result.params[1:]
+        X = self.X.drop('Intercept', axis=1)
+        means = X.mean()
+        y_mean = self.y.mean().item()
+        coefs = self.result.params.drop('Intercept')
 
         elasticities = coefs * (means / y_mean)
 
@@ -101,8 +94,7 @@ class LinearModels:
         """
         std_coefs = self.standardized_coefficients()
         elasticities = self.elasticities()
-        # drop 'Intercept'
-        coefs = self.result.params[1:]
+        coefs = self.result.params.drop('Intercept')
         table = pd.DataFrame(
             dict(coefs=coefs, std_coefs=std_coefs, elasticities=elasticities)
         )
