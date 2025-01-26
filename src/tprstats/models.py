@@ -61,20 +61,17 @@ class LinearModels:
         return prediction_table
 
     def standardized_coefficients(self):
-        """
-        Returns a table of the standardized coefficients.
+        """Returns the standardized coefficients.
         A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+
+        Returns:
+            pandas.Series: Standardized Coefficients
         """
-        # standardize data
-        df_z = (
-            self.data.select_dtypes(include=[np_number])
-            .dropna()
-            .apply(scipy_stats.zscore)
-        )
-        y_z, X_z = design_matrices(self.formula, data=df_z, return_type="dataframe")
-        result = sm_OLS(y_z, X_z).fit()
-        # drop 'Intercept
-        return result.params[1:]
+        standardized_coefs = pd.Series()
+        for col_name, col_data in self.X.items():
+            if col_data.dtype == np_number:
+                standardized_coefs[col_name] = (self.params[col_name] * self.X[col_name].std() / self.y.std()).item()
+        return standardized_coefs.drop('Intercept')
 
     def elasticities(self):
         """
