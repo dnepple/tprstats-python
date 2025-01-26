@@ -27,6 +27,10 @@ class LinearModels:
 
     def summary(self):
         return self.result.summary(slim=True)
+    
+    def predict(self, exog):
+        _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
+        return self.result.predict(exog=exog)
 
     def cite(self):
         """Returns citations for the source of the model."""
