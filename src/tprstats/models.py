@@ -80,8 +80,7 @@ class LinearModels:
         X = self.X.drop('Intercept', axis=1)
         means = X.mean()
         y_mean = self.y.mean().item()
-        # drop 'Intercept'
-        coefs = self.result.params[1:]
+        coefs = self.result.params.drop('Intercept')
 
         elasticities = coefs * (means / y_mean)
 
@@ -95,8 +94,7 @@ class LinearModels:
         """
         std_coefs = self.standardized_coefficients()
         elasticities = self.elasticities()
-        # drop 'Intercept'
-        coefs = self.result.params[1:]
+        coefs = self.result.params.drop('Intercept')
         table = pd.DataFrame(
             dict(coefs=coefs, std_coefs=std_coefs, elasticities=elasticities)
         )
