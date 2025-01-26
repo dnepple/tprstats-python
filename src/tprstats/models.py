@@ -15,8 +15,22 @@ from statsmodels.stats.diagnostic import linear_reset
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
+class ExogMixin:
 
-class LinearModels:
+    def exog_as_dmatrix(self, exog):
+        """Creates a design matrix for out-of-sample data using the model formula that matches the columns keys in the model.s
+        """
+        # If the exog dataframe does not include a y column, we need to create a y column.
+        # We'll delete it later.
+        y_id = self.y.columns[0]
+        if not y_id in exog.columns:
+            exog[y_id] = [0] * len(exog)
+        # Adding y values allows us to reuse the model's formula to construct a the exog dmatrix.
+        # Here we get the exog dmatrix and discard the y matrix
+        _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
+        return exog
+
+class LinearModels(ExogMixin):
     """Base class for linear models. This class wraps statsmodels' RegressionResults and provides additional methods relevant to linear models."""
 
     def __init__(self, formula, data, **kwargs):
@@ -28,8 +42,9 @@ class LinearModels:
     def summary(self):
         return self.result.summary(slim=True)
     
-    def predict(self, exog, *args, **kwargs):
-        _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
+    def predict(self, exog = None, *args, **kwargs):
+        if exog is not None:
+            exog = self.exog_as_dmatrix(exog)
         return self.result.predict(exog=exog, *args, **kwargs)
 
     def cite(self):
@@ -52,7 +67,7 @@ class LinearModels:
 
     def prediction_intervals(self, exog=None, alpha=0.05):
         """Returns a table of prediction intervals."""
-        _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
+        exog = self.exog_as_dmatrix(exog)
         predictions = self.result.get_prediction(exog)
         prediction_table = predictions.summary_frame(alpha=alpha)
         prediction_table = prediction_table[["mean", "obs_ci_lower", "obs_ci_upper"]]
@@ -204,12 +219,17 @@ class CrossSectionLinearModel(LinearModels):
         self.result = self.model.fit(cov_type="HC1")
 
 
-class BinaryChoiceModels:
+class BinaryChoiceModels(ExogMixin):
     """Base class for Binary Choice Models. Provides general methods related to binary choice models."""
 
     def __init__(self, formula, data, **kwargs):
         self.y, self.X = design_matrices(formula, data=data, return_type="dataframe")
         self.formula = formula
+
+    def predict(self, exog=None, *args, **kwargs):
+        if exog is not None:
+            exog = self.exog_as_dmatrix(exog)
+        return self.result.predict(exog=exog, *args, **kwargs)
 
     def predict_and_rank(self, exog):
         """Predict probabilities from a binary choice model and order probabilities from lowest to highest.
@@ -220,6 +240,8 @@ class BinaryChoiceModels:
         Returns:
             : Predictions by rank.
         """
+        if exog is not None:
+            exog = self.exog_as_dmatrix(exog)
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
         prospects["ProspectRank"] = prospects["PredictionNew"].rank()
@@ -293,7 +315,7 @@ class ProbitModel(BinaryChoiceModels):
         self.data = data
 
 
-class ARIMAModel:
+class ARIMAModel(ExogMixin):
     def __init__(self, formula, data, order=(1, 0, 0), **kwargs):
         # "-1" prevents patsy from adding a constant to the design matrices
         self.formula = formula + "-1"
@@ -303,6 +325,11 @@ class ARIMAModel:
         self.model = sm_ARIMA(endog=self.y, exog=self.X, order=order, **kwargs)
         self.result = self.model.fit(method="innovations_mle", **kwargs)
 
+    def predict(self, exog, *args, **kwargs):
+        if exog is not None:
+            exog = self.exog_as_dmatrix(exog)
+        return self.result.predict(exog=exog, *args, **kwargs)
+    
     def __getattr__(self, name):
         # Delegates any method calls not explicitly defined here to the wrapped object
         return getattr(self.result, name)
