@@ -18,7 +18,7 @@ from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 class ExogMixin:
 
     def exog_as_dmatrix(self, exog):
-        """Creates a design matrix for out-of-sample data using the model formula that matches the columns keys in the model.s
+        """Creates a design matrix for out-of-sample data using the model formula that matches the columns keys in the model's design matrix.
         """
         # If the exog dataframe does not include a y column, we need to create a y column.
         # We'll delete it later.
