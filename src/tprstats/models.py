@@ -244,8 +244,8 @@ class BinaryChoiceModels(ExogMixin):
             exog = self.exog_as_dmatrix(exog)
         prospects = exog
         prospects["PredictionNew"] = self.predict(exog)
-        prospects["ProspectRank"] = prospects["PredictionNew"].rank()
-        return prospects
+        prospects["ProspectRank"] = prospects["PredictionNew"].rank(ascending=False)
+        return prospects.sort_values(by="ProspectRank")
 
     def classification_table(self, p_cutoff=None):
         """Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model's predictive accuracy.
