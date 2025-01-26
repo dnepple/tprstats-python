@@ -28,9 +28,9 @@ class LinearModels:
     def summary(self):
         return self.result.summary(slim=True)
     
-    def predict(self, exog):
+    def predict(self, exog, *args, **kwargs):
         _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
-        return self.result.predict(exog=exog)
+        return self.result.predict(exog=exog, *args, **kwargs)
 
     def cite(self):
         """Returns citations for the source of the model."""
@@ -52,6 +52,7 @@ class LinearModels:
 
     def prediction_intervals(self, exog=None, alpha=0.05):
         """Returns a table of prediction intervals."""
+        _, exog = design_matrices(self.formula, data = exog, return_type="dataframe")
         predictions = self.result.get_prediction(exog)
         prediction_table = predictions.summary_frame(alpha=alpha)
         prediction_table = prediction_table[["mean", "obs_ci_lower", "obs_ci_upper"]]
