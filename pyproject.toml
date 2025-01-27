@@ -7,7 +7,7 @@ authors = [
     {name = "Stephen Epple", email = "sepple@alumni.cmu.edu"}, 
     ]
 requires-python = ">= 3.10"
-dependencies = ["pandas", "statsmodels"]
+dependencies = ["pandas", "statsmodels", "formulaic", "scipy", "numpy", "matplotlib"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tprstats"]
