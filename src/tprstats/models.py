@@ -203,10 +203,11 @@ class LinearModels(ExogMixin):
 
 class TimeSeriesLinearModel(LinearModels):
     def __init__(self, formula, data, **kwargs):
-        kwargs.setdefault("maxlags", 2)
+        lags = 2
+        kwargs.setdefault("maxlags", lags)
         kwargs.setdefault("use_correction", True)
         super().__init__(formula, data, **kwargs)
-        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
+        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": lags})
 
 
 class CrossSectionLinearModel(LinearModels):
