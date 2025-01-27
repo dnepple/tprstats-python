@@ -15,14 +15,14 @@ from statsmodels.stats.diagnostic import linear_reset
 # numpy required for use in patsy formulae
 from numpy import log, exp, floor, ceil, trunc, absolute  # noqa: F401
 
-class ExogMixin:
 
+class ExogMixin:
     def handle_exog(self, exog):
-        """Creates a design matrix for out-of-sample data based on the given model's formula ModelSpec.
-        """
+        """Creates a design matrix for out-of-sample data based on the given model's formula ModelSpec."""
         mspec = self.X.model_spec
         exog = design_matrices(mspec, exog)
         return exog
+
 
 class LinearModels(ExogMixin):
     """Base class for linear models. This class wraps statsmodels' RegressionResults and provides additional methods relevant to linear models."""
@@ -35,8 +35,8 @@ class LinearModels(ExogMixin):
 
     def summary(self):
         return self.result.summary(slim=True)
-    
-    def predict(self, exog = None, *args, **kwargs):
+
+    def predict(self, exog=None, *args, **kwargs):
         if exog is not None:
             exog = self.handle_exog(exog)
         return self.result.predict(exog=exog, *args, **kwargs)
@@ -84,17 +84,19 @@ class LinearModels(ExogMixin):
         standardized_coefs = pd.Series()
         for col_name, col_data in self.X.items():
             if col_data.dtype == np_number:
-                standardized_coefs[col_name] = (self.params[col_name] * self.X[col_name].std() / self.y.std()).item()
-        return standardized_coefs.drop('Intercept')
+                standardized_coefs[col_name] = (
+                    self.result.params[col_name] * self.X[col_name].std() / self.y.std()
+                ).item()
+        return standardized_coefs.drop("Intercept")
 
     def elasticities(self):
         """
         Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.
         """
-        X = self.X.drop('Intercept', axis=1)
+        X = self.X.drop("Intercept", axis=1)
         means = X.mean()
         y_mean = self.y.mean().item()
-        coefs = self.result.params.drop('Intercept')
+        coefs = self.result.params.drop("Intercept")
 
         elasticities = coefs * (means / y_mean)
 
@@ -108,7 +110,7 @@ class LinearModels(ExogMixin):
         """
         std_coefs = self.standardized_coefficients()
         elasticities = self.elasticities()
-        coefs = self.result.params.drop('Intercept')
+        coefs = self.result.params.drop("Intercept")
         table = pd.DataFrame(
             dict(coefs=coefs, std_coefs=std_coefs, elasticities=elasticities)
         )
@@ -204,7 +206,7 @@ class TimeSeriesLinearModel(LinearModels):
         kwargs.setdefault("maxlags", 2)
         kwargs.setdefault("use_correction", True)
         super().__init__(formula, data, **kwargs)
-        self.result = self.model.fit().get_robustcov_results(cov_type="HAC", **kwargs)
+        self.result = self.model.fit(cov_type="HAC", cov_kwds={"maxlags": 1})
 
 
 class CrossSectionLinearModel(LinearModels):
@@ -313,9 +315,7 @@ class ARIMAModel(ExogMixin):
     def __init__(self, formula, data, order=(1, 0, 0), **kwargs):
         # "-1" prevents patsy from adding a constant to the design matrices
         self.formula = formula + "-1"
-        self.y, self.X = design_matrices(
-            self.formula, data=data
-        )
+        self.y, self.X = design_matrices(self.formula, data=data)
         self.model = sm_ARIMA(endog=self.y, exog=self.X, order=order, **kwargs)
         self.result = self.model.fit(method="innovations_mle", **kwargs)
 
@@ -323,7 +323,7 @@ class ARIMAModel(ExogMixin):
         if exog is not None:
             exog = self.handle_exog(exog)
         return self.result.predict(exog=exog, *args, **kwargs)
-    
+
     def __getattr__(self, name):
         # Delegates any method calls not explicitly defined here to the wrapped object
         return getattr(self.result, name)
