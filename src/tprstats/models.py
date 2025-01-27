@@ -8,7 +8,6 @@ from numpy import (
     column_stack as np_column_stack,
 )
 import pandas as pd
-from scipy import stats as scipy_stats
 from .plots import _plot_actual_fitted
 from statsmodels.stats.diagnostic import linear_reset
 
