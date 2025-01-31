@@ -238,7 +238,7 @@ class BinaryChoiceModels(ExogMixin):
         """
         if exog is not None:
             exog = self.handle_exog(exog)
-        prospects = exog
+        prospects = exog.copy()
         prospects["PredictionNew"] = self.predict(exog)
         prospects["ProspectRank"] = prospects["PredictionNew"].rank(ascending=False)
         return prospects.sort_values(by="ProspectRank")
