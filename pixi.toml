@@ -10,6 +10,7 @@ matplotlib = ">=3.9.2,<4"
 formulaic = ">=1.1.1,<2"
 numpy = ">=2.2.2,<3"
 scipy = ">=1.15.1,<2"
+openpyxl = ">=3.1.5,<4"
 
 [host-dependencies]
 pip = "*"

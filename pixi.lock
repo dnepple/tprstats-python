@@ -22450,7 +22450,7 @@ packages:
 - pypi: .
   name: tprstats
   version: 0.1.0
-  sha256: b45d479b5b9b0a27d47239f39781df26fd815905ca044c055e973c9ea0f26f62
+  sha256: f507a4ec09909a46a6e6d42eae759d6e6594867010b06042f6152f18c91f2ff2
   requires_dist:
   - pandas>=2.2.3,<3
   - statsmodels>=0.14.4,<0.15
@@ -22458,6 +22458,7 @@ packages:
   - scipy>=1.15.1,<2
   - numpy>=2.2.2,<3
   - matplotlib>=3.9.2,<4
+  - openpyxl>=3.1.5,<4
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.3-pyhd8ed1ab_0.conda
