@@ -203,9 +203,6 @@ def hist_CI(data, alpha=0.1, bins=20):
     # Add labels and legend
     plt.xlabel("Data and (1-alpha)% Confidence Interval")
     plt.ylabel("Frequency")
-    mean = round(np_mean(data), 3)
-    txt = f"Alpha={alpha} and mean={mean}"
-    plt.text(0.5, -0.05, txt, ha="center")
     plt.legend()
 
     # Show the plot
