@@ -7,6 +7,7 @@ __all__ = [
     "calculate_aic",
     "list_aic",
     "select_distribution",
+    "test_population_mean",
 ]
 # read version from installed package
 from importlib.metadata import version
@@ -20,3 +21,4 @@ from .fit_distribution import (
     list_aic,
     select_distribution,
 )
+from .hypothesis_test import test_population_mean
