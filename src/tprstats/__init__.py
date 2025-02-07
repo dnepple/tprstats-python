@@ -8,6 +8,8 @@ __all__ = [
     "list_aic",
     "select_distribution",
     "test_population_mean",
+    "AB_nobs",
+    "AB_power",
 ]
 # read version from installed package
 from importlib.metadata import version
@@ -22,3 +24,4 @@ from .fit_distribution import (
     select_distribution,
 )
 from .hypothesis_test import test_population_mean
+from .experimental_design import AB_nobs, AB_power
