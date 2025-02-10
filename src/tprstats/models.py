@@ -3,7 +3,6 @@ from formulaic import model_matrix as design_matrices
 from statsmodels.tsa.api import ARIMA as sm_ARIMA
 from numpy import (
     mean as np_mean,
-    number as np_number,
     random as np_random,
     column_stack as np_column_stack,
 )
@@ -82,10 +81,9 @@ class LinearModels(ExogMixin):
         """
         standardized_coefs = pd.Series()
         for col_name, col_data in self.X.items():
-            if col_data.dtype == np_number:
-                standardized_coefs[col_name] = (
-                    self.result.params[col_name] * self.X[col_name].std() / self.y.std()
-                ).item()
+            standardized_coefs[col_name] = (
+                self.result.params[col_name] * self.X[col_name].std() / self.y.std()
+            ).item()
         return standardized_coefs.drop("Intercept")
 
     def elasticities(self):
