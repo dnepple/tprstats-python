@@ -31,8 +31,8 @@ class LinearModels(ExogMixin):
         self.data = data
         self.formula = formula
 
-    def summary(self):
-        return self.result.summary(slim=True)
+    def summary(self, **kwargs):
+        return self.result.summary(slim=True, **kwargs)
 
     def predict(self, exog=None, *args, **kwargs):
         if exog is not None:
