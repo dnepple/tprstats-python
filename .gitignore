@@ -73,7 +73,9 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs/_build/doctrees
+docs/_build/jupyter_execute
+
 
 # PyBuilder
 target/
