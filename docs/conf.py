@@ -35,3 +35,9 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+
+# List of patterns to exclude when looking for source files
+exclude_patterns = [
+    'tests/*',  # Exclude the entire tests directory
+]
