@@ -1,0 +1,1287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; tprstats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plots" href="plots.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            tprstats
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linear-models">Linear Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-model">Create a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary-statistics">Summary Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#model-and-new-data">Model and New Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prediction-intervals">Prediction Intervals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scaled-ceofficients">Scaled Ceofficients</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elasticities">Elasticities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#standardized-coefficients">Standardized Coefficients</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plots">Plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#plot-actual-vs-fitted-values">Plot Actual vs. Fitted Values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#statistical-tests">Statistical Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wald-test">Wald Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ramsey-test-reset">Ramsey Test (RESET)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#binary-choice-models">Binary Choice Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logit">Logit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#probit">Probit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Prediction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula.html">Formula Notation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tprstats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/models.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Link to this heading"></a></h1>
+<section id="linear-models">
+<h2>Linear Models<a class="headerlink" href="#linear-models" title="Link to this heading"></a></h2>
+<div class="cell tag_hide-cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#setup</span>
+<span class="kn">import</span> <span class="nn">tprstats</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">coffee_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;../data/Coffee_Data.xlsx&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
+<span class="n">diamonds_211</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;../data/Diamonds_211.xlsx&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="create-a-model">
+<h3>Create a Model<a class="headerlink" href="#create-a-model" title="Link to this heading"></a></h3>
+<p>To create a model, use the <code class="docutils literal notranslate"><span class="pre">tprstats.model()</span></code> function providing the name, formula, and data used in the model. The <code class="docutils literal notranslate"><span class="pre">tprstats.model()</span></code> function will automatically run a regression to fit the data.</p>
+<p>Models:</p>
+<ul class="simple">
+<li><p>Cross-sectional linear models <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;cs&quot;</span></code>.</p></li>
+<li><p>Time series linear models <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;ts&quot;</span></code>.</p></li>
+<li><p>Logit Binary Choice models <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;logit&quot;</span></code>.</p></li>
+<li><p>Probit Binary Choice models <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;probit&quot;</span></code>.</p></li>
+<li><p>ARIMA time series model <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">arima</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_diamond</span> <span class="o">=</span> <span class="n">tprstats</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;cs&quot;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;Price ~ Carat + C(Clarity)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">diamonds_211</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-statistics">
+<h3>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_diamond</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>     <td>Price</td> <th>  R-squared:         </th> <td>   0.968</td> 
+</tr>
+<tr>
+  <th>Model:</th>              <td>OLS</td>  <th>  Adj. R-squared:    </th> <td>   0.967</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th> <td>   211</td> <th>  F-statistic:       </th> <td>   765.0</td> 
+</tr>
+<tr>
+  <th>Covariance Type:</th>    <td>HC1</td>  <th>  Prob (F-statistic):</th> <td>6.99e-137</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+         <td></td>            <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>       <td>-1.241e+04</td> <td>  699.105</td> <td>  -17.754</td> <td> 0.000</td> <td>-1.38e+04</td> <td> -1.1e+04</td>
+</tr>
+<tr>
+  <th>Carat</th>           <td> 1.235e+04</td> <td>  271.137</td> <td>   45.557</td> <td> 0.000</td> <td> 1.18e+04</td> <td> 1.29e+04</td>
+</tr>
+<tr>
+  <th>C(Clarity)[T.3]</th> <td> 4254.2767</td> <td>  454.654</td> <td>    9.357</td> <td> 0.000</td> <td> 3357.853</td> <td> 5150.701</td>
+</tr>
+<tr>
+  <th>C(Clarity)[T.4]</th> <td> 5942.2429</td> <td>  475.430</td> <td>   12.499</td> <td> 0.000</td> <td> 5004.856</td> <td> 6879.630</td>
+</tr>
+<tr>
+  <th>C(Clarity)[T.5]</th> <td> 7089.8345</td> <td>  535.164</td> <td>   13.248</td> <td> 0.000</td> <td> 6034.672</td> <td> 8144.997</td>
+</tr>
+<tr>
+  <th>C(Clarity)[T.6]</th> <td> 7688.9068</td> <td>  806.822</td> <td>    9.530</td> <td> 0.000</td> <td> 6098.128</td> <td> 9279.686</td>
+</tr>
+<tr>
+  <th>C(Clarity)[T.8]</th> <td> 9160.7157</td> <td>  616.563</td> <td>   14.858</td> <td> 0.000</td> <td> 7945.063</td> <td> 1.04e+04</td>
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors are heteroscedasticity robust (HC1)</div></div>
+</div>
+</section>
+<section id="prediction">
+<h3>Prediction<a class="headerlink" href="#prediction" title="Link to this heading"></a></h3>
+<section id="model-and-new-data">
+<h4>Model and New Data<a class="headerlink" href="#model-and-new-data" title="Link to this heading"></a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span> <span class="o">=</span> <span class="n">tprstats</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;ts&quot;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;cons~rpcarb+rpcinc+rpcofe&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">coffee_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># new data for prediction</span>
+<span class="n">Xnew_coffee</span> <span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;rpcarb&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">93</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">151</span><span class="p">],</span>
+    <span class="s2">&quot;rpcinc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
+    <span class="s2">&quot;rpcofe&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">74</span><span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-intervals">
+<h4>Prediction Intervals<a class="headerlink" href="#prediction-intervals" title="Link to this heading"></a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">prediction_intervals</span><span class="p">(</span><span class="n">Xnew_coffee</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Predicted</th>
+      <th>Lower</th>
+      <th>Upper</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.143979</td>
+      <td>9.003388</td>
+      <td>11.284570</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.045275</td>
+      <td>7.883495</td>
+      <td>10.207055</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>14.710292</td>
+      <td>13.549389</td>
+      <td>15.871194</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="scaled-ceofficients">
+<h3>Scaled Ceofficients<a class="headerlink" href="#scaled-ceofficients" title="Link to this heading"></a></h3>
+<p>Scaled coefficient including standardized coefficients and elasticities can be accessed via the <code class="docutils literal notranslate"><span class="pre">scaled_coefficients</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">scaled_coefficients</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>coefs</th>
+      <th>std_coefs</th>
+      <th>elasticities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>rpcarb</th>
+      <td>0.090120</td>
+      <td>1.356548</td>
+      <td>0.8475</td>
+    </tr>
+    <tr>
+      <th>rpcinc</th>
+      <td>0.123477</td>
+      <td>0.412841</td>
+      <td>0.2540</td>
+    </tr>
+    <tr>
+      <th>rpcofe</th>
+      <td>-0.012582</td>
+      <td>-0.116004</td>
+      <td>-0.1065</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="elasticities">
+<h4>Elasticities<a class="headerlink" href="#elasticities" title="Link to this heading"></a></h4>
+<p>To access just the elasticities, use the <code class="docutils literal notranslate"><span class="pre">elasticities</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">elasticities</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rpcarb    0.8475
+rpcinc    0.2540
+rpcofe   -0.1065
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="standardized-coefficients">
+<h4>Standardized Coefficients<a class="headerlink" href="#standardized-coefficients" title="Link to this heading"></a></h4>
+<p>To access just the standardized coefficients, use the <code class="docutils literal notranslate"><span class="pre">standardized_coefficients</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">standardized_coefficients</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rpcarb    1.356548
+rpcinc    0.412841
+rpcofe   -0.116004
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plots">
+<h3>Plots<a class="headerlink" href="#plots" title="Link to this heading"></a></h3>
+<section id="plot-actual-vs-fitted-values">
+<h4>Plot Actual vs. Fitted Values<a class="headerlink" href="#plot-actual-vs-fitted-values" title="Link to this heading"></a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">plot_actual_fitted</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ed57a3beefb914394b70150f0d47c99bc3cac02e7c98c41314badce48cefccfe.png" src="_images/ed57a3beefb914394b70150f0d47c99bc3cac02e7c98c41314badce48cefccfe.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="statistical-tests">
+<h3>Statistical Tests<a class="headerlink" href="#statistical-tests" title="Link to this heading"></a></h3>
+<section id="wald-test">
+<h4>Wald Test<a class="headerlink" href="#wald-test" title="Link to this heading"></a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">wald_test</span><span class="p">(</span><span class="s1">&#39;(rpcofe = -0.018, rpcarb = 0.065)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p-value:  0.0063
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ramsey-test-reset">
+<h4>Ramsey Test (RESET)<a class="headerlink" href="#ramsey-test-reset" title="Link to this heading"></a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_coffee_ts</span><span class="o">.</span><span class="n">ramsey_test</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>power</th>
+      <th>pvalue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.182315</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.372575</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="binary-choice-models">
+<h2>Binary Choice Models<a class="headerlink" href="#binary-choice-models" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import data</span>
+<span class="n">solar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;../data/Solar_Data.xlsx&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">solar_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;../data/Solar_New_Prospects.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="logit">
+<h3>Logit<a class="headerlink" href="#logit" title="Link to this heading"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_logit</span><span class="o">=</span><span class="n">tprstats</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s2">&quot;logit&quot;</span><span class="p">,</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Sale~AnnualSave+AnnualCost+DrivesHybrid+NearbySolar+HomeValue&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">solar</span><span class="p">)</span>
+<span class="n">solar_logit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.102926
+         Iterations 9
+</pre></div>
+</div>
+<div class="output text_html"><table class="simpletable">
+<caption>Logit Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>         <td>Sale</td>       <th>  No. Observations:  </th>  <td>  1500</td>  
+</tr>
+<tr>
+  <th>Model:</th>                 <td>Logit</td>      <th>  Df Residuals:      </th>  <td>  1494</td>  
+</tr>
+<tr>
+  <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     5</td>  
+</tr>
+<tr>
+  <th>Date:</th>            <td>Thu, 27 Feb 2025</td> <th>  Pseudo R-squ.:     </th>  <td>0.2847</td>  
+</tr>
+<tr>
+  <th>Time:</th>                <td>20:17:51</td>     <th>  Log-Likelihood:    </th> <td> -154.39</td> 
+</tr>
+<tr>
+  <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -215.84</td> 
+</tr>
+<tr>
+  <th>Covariance Type:</th>     <td>nonrobust</td>    <th>  LLR p-value:       </th> <td>7.619e-25</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+        <td></td>          <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>    <td>  -12.7445</td> <td>    4.837</td> <td>   -2.635</td> <td> 0.008</td> <td>  -22.224</td> <td>   -3.265</td>
+</tr>
+<tr>
+  <th>AnnualSave</th>   <td>    3.9268</td> <td>    0.649</td> <td>    6.048</td> <td> 0.000</td> <td>    2.654</td> <td>    5.199</td>
+</tr>
+<tr>
+  <th>AnnualCost</th>   <td>   -4.0989</td> <td>    1.475</td> <td>   -2.778</td> <td> 0.005</td> <td>   -6.990</td> <td>   -1.207</td>
+</tr>
+<tr>
+  <th>DrivesHybrid</th> <td>    0.9644</td> <td>    0.413</td> <td>    2.333</td> <td> 0.020</td> <td>    0.154</td> <td>    1.775</td>
+</tr>
+<tr>
+  <th>NearbySolar</th>  <td>    1.9421</td> <td>    0.398</td> <td>    4.884</td> <td> 0.000</td> <td>    1.163</td> <td>    2.722</td>
+</tr>
+<tr>
+  <th>HomeValue</th>    <td>    0.0178</td> <td>    0.008</td> <td>    2.192</td> <td> 0.028</td> <td>    0.002</td> <td>    0.034</td>
+</tr>
+</table></div></div>
+</div>
+</section>
+<section id="id1">
+<h3>Prediction<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_logit</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.01617376, 0.00438152, 0.02321191, ..., 0.1497396 , 0.0078212 ,
+       0.02681689], shape=(1500,))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_logit</span><span class="o">.</span><span class="n">classification_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1176.0, 275.0, 6.0, 43.0]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Summary</th>
+      <th>Actual</th>
+      <th>Predicted</th>
+      <th>Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Correct</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1176.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Incorrect</td>
+      <td>0</td>
+      <td>1</td>
+      <td>275.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Incorrect</td>
+      <td>1</td>
+      <td>0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Correct</td>
+      <td>1</td>
+      <td>1</td>
+      <td>43.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_out_of_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;AnnualSave&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span>
+    <span class="s2">&quot;AnnualCost&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">],</span>
+    <span class="s2">&quot;DrivesHybrid&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+    <span class="s2">&quot;NearbySolar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s2">&quot;HomeValue&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">550</span><span class="p">,</span> <span class="mi">675</span><span class="p">,</span> <span class="mi">495</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We create three homes: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_out_of_sample</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted Probabilities of purchase for the three homes are: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">solar_logit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_out_of_sample</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We create three homes: 
+   AnnualSave  AnnualCost  DrivesHybrid  NearbySolar  HomeValue
+0         2.5         1.8             1            0        550
+1         1.9         1.5             0            1        675
+2         2.3         1.7             0            0        495
+Predicted Probabilities of purchase for the three homes are: 
+0    0.613822
+1    0.927109
+2    0.135068
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># marginal effects</span>
+<span class="n">solar_logit</span><span class="o">.</span><span class="n">marginal_effects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>Logit Marginal Effects</caption>
+<tr>
+  <th>Dep. Variable:</th>  <td>Sale</td>  
+</tr>
+<tr>
+  <th>Method:</th>         <td>dydx</td>  
+</tr>
+<tr>
+  <th>At:</th>            <td>overall</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+        <th></th>          <th>dy/dx</th>    <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>AnnualSave</th>   <td>    0.1013</td> <td>    0.018</td> <td>    5.535</td> <td> 0.000</td> <td>    0.065</td> <td>    0.137</td>
+</tr>
+<tr>
+  <th>AnnualCost</th>   <td>   -0.1057</td> <td>    0.039</td> <td>   -2.721</td> <td> 0.007</td> <td>   -0.182</td> <td>   -0.030</td>
+</tr>
+<tr>
+  <th>DrivesHybrid</th> <td>    0.0249</td> <td>    0.011</td> <td>    2.312</td> <td> 0.021</td> <td>    0.004</td> <td>    0.046</td>
+</tr>
+<tr>
+  <th>NearbySolar</th>  <td>    0.0501</td> <td>    0.011</td> <td>    4.611</td> <td> 0.000</td> <td>    0.029</td> <td>    0.071</td>
+</tr>
+<tr>
+  <th>HomeValue</th>    <td>    0.0005</td> <td>    0.000</td> <td>    2.161</td> <td> 0.031</td> <td> 4.27e-05</td> <td>    0.001</td>
+</tr>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_logit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">solar_new</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      0.200212
+1      0.030138
+2      0.006383
+3      0.015173
+4      0.003679
+         ...   
+995    0.001549
+996    0.284837
+997    0.800973
+998    0.692739
+999    0.000486
+Length: 1000, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_logit</span><span class="o">.</span><span class="n">predict_and_rank</span><span class="p">(</span><span class="n">solar_new</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Intercept</th>
+      <th>AnnualSave</th>
+      <th>AnnualCost</th>
+      <th>DrivesHybrid</th>
+      <th>NearbySolar</th>
+      <th>HomeValue</th>
+      <th>PredictionNew</th>
+      <th>ProspectRank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>980</th>
+      <td>1.0</td>
+      <td>3.009684</td>
+      <td>1.862946</td>
+      <td>0</td>
+      <td>0</td>
+      <td>574.450942</td>
+      <td>0.842685</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>938</th>
+      <td>1.0</td>
+      <td>3.244934</td>
+      <td>2.034931</td>
+      <td>0</td>
+      <td>0</td>
+      <td>556.284208</td>
+      <td>0.828255</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>850</th>
+      <td>1.0</td>
+      <td>2.792388</td>
+      <td>1.942580</td>
+      <td>0</td>
+      <td>1</td>
+      <td>525.557723</td>
+      <td>0.827666</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>871</th>
+      <td>1.0</td>
+      <td>2.900204</td>
+      <td>1.718183</td>
+      <td>0</td>
+      <td>0</td>
+      <td>555.587322</td>
+      <td>0.818398</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>817</th>
+      <td>1.0</td>
+      <td>3.181619</td>
+      <td>1.811254</td>
+      <td>0</td>
+      <td>0</td>
+      <td>513.716687</td>
+      <td>0.814978</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>999</th>
+      <td>1.0</td>
+      <td>0.708387</td>
+      <td>1.641288</td>
+      <td>0</td>
+      <td>0</td>
+      <td>508.298030</td>
+      <td>0.000486</td>
+      <td>996.0</td>
+    </tr>
+    <tr>
+      <th>385</th>
+      <td>1.0</td>
+      <td>1.111673</td>
+      <td>2.022553</td>
+      <td>0</td>
+      <td>0</td>
+      <td>506.252013</td>
+      <td>0.000478</td>
+      <td>997.0</td>
+    </tr>
+    <tr>
+      <th>935</th>
+      <td>1.0</td>
+      <td>0.863014</td>
+      <td>1.756444</td>
+      <td>0</td>
+      <td>0</td>
+      <td>496.592665</td>
+      <td>0.000451</td>
+      <td>998.0</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>1.0</td>
+      <td>0.664754</td>
+      <td>1.641288</td>
+      <td>0</td>
+      <td>0</td>
+      <td>508.298030</td>
+      <td>0.000409</td>
+      <td>999.0</td>
+    </tr>
+    <tr>
+      <th>608</th>
+      <td>1.0</td>
+      <td>0.607246</td>
+      <td>1.831445</td>
+      <td>0</td>
+      <td>0</td>
+      <td>536.098088</td>
+      <td>0.000246</td>
+      <td>1000.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1000 rows × 8 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="probit">
+<h3>Probit<a class="headerlink" href="#probit" title="Link to this heading"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">=</span><span class="n">tprstats</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s2">&quot;probit&quot;</span><span class="p">,</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Sale~AnnualSave+AnnualCost+DrivesHybrid+NearbySolar+HomeValue&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">solar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.100579
+         Iterations 9
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>Probit Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>         <td>Sale</td>       <th>  No. Observations:  </th>  <td>  1500</td>  
+</tr>
+<tr>
+  <th>Model:</th>                <td>Probit</td>      <th>  Df Residuals:      </th>  <td>  1494</td>  
+</tr>
+<tr>
+  <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     5</td>  
+</tr>
+<tr>
+  <th>Date:</th>            <td>Thu, 27 Feb 2025</td> <th>  Pseudo R-squ.:     </th>  <td>0.3010</td>  
+</tr>
+<tr>
+  <th>Time:</th>                <td>20:17:51</td>     <th>  Log-Likelihood:    </th> <td> -150.87</td> 
+</tr>
+<tr>
+  <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -215.84</td> 
+</tr>
+<tr>
+  <th>Covariance Type:</th>     <td>nonrobust</td>    <th>  LLR p-value:       </th> <td>2.450e-26</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+        <td></td>          <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>    <td>   -6.5365</td> <td>    2.307</td> <td>   -2.833</td> <td> 0.005</td> <td>  -11.058</td> <td>   -2.015</td>
+</tr>
+<tr>
+  <th>AnnualSave</th>   <td>    1.9807</td> <td>    0.314</td> <td>    6.310</td> <td> 0.000</td> <td>    1.365</td> <td>    2.596</td>
+</tr>
+<tr>
+  <th>AnnualCost</th>   <td>   -2.1618</td> <td>    0.741</td> <td>   -2.917</td> <td> 0.004</td> <td>   -3.614</td> <td>   -0.709</td>
+</tr>
+<tr>
+  <th>DrivesHybrid</th> <td>    0.5292</td> <td>    0.205</td> <td>    2.581</td> <td> 0.010</td> <td>    0.127</td> <td>    0.931</td>
+</tr>
+<tr>
+  <th>NearbySolar</th>  <td>    0.9933</td> <td>    0.197</td> <td>    5.044</td> <td> 0.000</td> <td>    0.607</td> <td>    1.379</td>
+</tr>
+<tr>
+  <th>HomeValue</th>    <td>    0.0093</td> <td>    0.004</td> <td>    2.387</td> <td> 0.017</td> <td>    0.002</td> <td>    0.017</td>
+</tr>
+</table></div></div>
+</div>
+</section>
+<section id="id2">
+<h3>Prediction<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.01471621, 0.00226384, 0.02421279, ..., 0.16397987, 0.00457754,
+       0.02389391], shape=(1500,))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted Probabilities of purchase for the three synthetic homes in X_out_of_sample using probit.predict:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">solar_probit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_out_of_sample</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicted Probabilities of purchase for the three synthetic homes in X_out_of_sample using probit.predict:
+0    0.561305
+1    0.892098
+2    0.143439
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">.</span><span class="n">classification_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1168.0, 283.0, 6.0, 43.0]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Summary</th>
+      <th>Actual</th>
+      <th>Predicted</th>
+      <th>Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Correct</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1168.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Incorrect</td>
+      <td>0</td>
+      <td>1</td>
+      <td>283.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Incorrect</td>
+      <td>1</td>
+      <td>0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Correct</td>
+      <td>1</td>
+      <td>1</td>
+      <td>43.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">.</span><span class="n">marginal_effects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>Probit Marginal Effects</caption>
+<tr>
+  <th>Dep. Variable:</th>  <td>Sale</td>  
+</tr>
+<tr>
+  <th>Method:</th>         <td>dydx</td>  
+</tr>
+<tr>
+  <th>At:</th>            <td>overall</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+        <th></th>          <th>dy/dx</th>    <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>AnnualSave</th>   <td>    0.1026</td> <td>    0.018</td> <td>    5.784</td> <td> 0.000</td> <td>    0.068</td> <td>    0.137</td>
+</tr>
+<tr>
+  <th>AnnualCost</th>   <td>   -0.1120</td> <td>    0.039</td> <td>   -2.866</td> <td> 0.004</td> <td>   -0.189</td> <td>   -0.035</td>
+</tr>
+<tr>
+  <th>DrivesHybrid</th> <td>    0.0274</td> <td>    0.011</td> <td>    2.556</td> <td> 0.011</td> <td>    0.006</td> <td>    0.048</td>
+</tr>
+<tr>
+  <th>NearbySolar</th>  <td>    0.0514</td> <td>    0.011</td> <td>    4.784</td> <td> 0.000</td> <td>    0.030</td> <td>    0.073</td>
+</tr>
+<tr>
+  <th>HomeValue</th>    <td>    0.0005</td> <td>    0.000</td> <td>    2.356</td> <td> 0.018</td> <td> 8.07e-05</td> <td>    0.001</td>
+</tr>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solar_probit</span><span class="o">.</span><span class="n">predict_and_rank</span><span class="p">(</span><span class="n">solar_new</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Intercept</th>
+      <th>AnnualSave</th>
+      <th>AnnualCost</th>
+      <th>DrivesHybrid</th>
+      <th>NearbySolar</th>
+      <th>HomeValue</th>
+      <th>PredictionNew</th>
+      <th>ProspectRank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>980</th>
+      <td>1.0</td>
+      <td>3.009684</td>
+      <td>1.862946</td>
+      <td>0</td>
+      <td>0</td>
+      <td>574.450942</td>
+      <td>0.765859</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>850</th>
+      <td>1.0</td>
+      <td>2.792388</td>
+      <td>1.942580</td>
+      <td>0</td>
+      <td>1</td>
+      <td>525.557723</td>
+      <td>0.746185</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>938</th>
+      <td>1.0</td>
+      <td>3.244934</td>
+      <td>2.034931</td>
+      <td>0</td>
+      <td>0</td>
+      <td>556.284208</td>
+      <td>0.742462</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>871</th>
+      <td>1.0</td>
+      <td>2.900204</td>
+      <td>1.718183</td>
+      <td>0</td>
+      <td>0</td>
+      <td>555.587322</td>
+      <td>0.740998</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>817</th>
+      <td>1.0</td>
+      <td>3.181619</td>
+      <td>1.811254</td>
+      <td>0</td>
+      <td>0</td>
+      <td>513.716687</td>
+      <td>0.730488</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>999</th>
+      <td>1.0</td>
+      <td>0.708387</td>
+      <td>1.641288</td>
+      <td>0</td>
+      <td>0</td>
+      <td>508.298030</td>
+      <td>0.000036</td>
+      <td>996.0</td>
+    </tr>
+    <tr>
+      <th>385</th>
+      <td>1.0</td>
+      <td>1.111673</td>
+      <td>2.022553</td>
+      <td>0</td>
+      <td>0</td>
+      <td>506.252013</td>
+      <td>0.000030</td>
+      <td>997.0</td>
+    </tr>
+    <tr>
+      <th>935</th>
+      <td>1.0</td>
+      <td>0.863014</td>
+      <td>1.756444</td>
+      <td>0</td>
+      <td>0</td>
+      <td>496.592665</td>
+      <td>0.000029</td>
+      <td>998.0</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>1.0</td>
+      <td>0.664754</td>
+      <td>1.641288</td>
+      <td>0</td>
+      <td>0</td>
+      <td>508.298030</td>
+      <td>0.000025</td>
+      <td>999.0</td>
+    </tr>
+    <tr>
+      <th>608</th>
+      <td>1.0</td>
+      <td>0.607246</td>
+      <td>1.831445</td>
+      <td>0</td>
+      <td>0</td>
+      <td>536.098088</td>
+      <td>0.000008</td>
+      <td>1000.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1000 rows × 8 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plots.html" class="btn btn-neutral float-right" title="Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stephen Epple.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

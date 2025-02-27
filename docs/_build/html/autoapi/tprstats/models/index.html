@@ -1,0 +1,911 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tprstats.models &mdash; tprstats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="tprstats.plots" href="../plots/index.html" />
+    <link rel="prev" title="tprstats.hypothesis_test" href="../hypothesis_test/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tprstats
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plots.html">Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../formula.html">Formula Notation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">tprstats</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../experimental_design/index.html">tprstats.experimental_design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fit_distribution/index.html">tprstats.fit_distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../hypothesis_test/index.html">tprstats.hypothesis_test</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tprstats.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plots/index.html">tprstats.plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tprstats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">tprstats</a></li>
+      <li class="breadcrumb-item active">tprstats.models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/tprstats/models/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tprstats.models">
+<span id="tprstats-models"></span><h1>tprstats.models<a class="headerlink" href="#module-tprstats.models" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.ExogMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">ExogMixin</span></span><a class="reference internal" href="../../../_modules/tprstats/models.html#ExogMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.ExogMixin" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ExogMixin.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#ExogMixin.handle_exog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.ExogMixin.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">LinearModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels" title="Link to this definition"></a></dt>
+<dd><p>Base class for linear models. This class wraps statsmodels’ RegressionResults and provides additional methods relevant to linear models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.LinearModels.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#tprstats.models.LinearModels.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.LinearModels.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.summary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.cite">
+<span class="sig-name descname"><span class="pre">cite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.cite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.cite" title="Link to this definition"></a></dt>
+<dd><p>Returns citations for the source of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.prediction_intervals">
+<span class="sig-name descname"><span class="pre">prediction_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.prediction_intervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.prediction_intervals" title="Link to this definition"></a></dt>
+<dd><p>Returns a table of prediction intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.standardized_coefficients">
+<span class="sig-name descname"><span class="pre">standardized_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.standardized_coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.standardized_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns the standardized coefficients.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Standardized Coefficients</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.elasticities">
+<span class="sig-name descname"><span class="pre">elasticities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.elasticities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.elasticities" title="Link to this definition"></a></dt>
+<dd><p>Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.scaled_coefficients">
+<span class="sig-name descname"><span class="pre">scaled_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.scaled_coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.scaled_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns a pandas.Dataframe containing the standardized cofficients (also known as beta weights) and elasticities.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+The function reports three columns which contain the coefficients, the standardized coefficients, and the elasticities evaluated at the means of the variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.plot_actual_fitted">
+<span class="sig-name descname"><span class="pre">plot_actual_fitted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.plot_actual_fitted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.plot_actual_fitted" title="Link to this definition"></a></dt>
+<dd><p>Plots actual values and predicted values with upper and lower prediction intervals for the given linear model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.wald_test">
+<span class="sig-name descname"><span class="pre">wald_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.wald_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.wald_test" title="Link to this definition"></a></dt>
+<dd><p>Test for linear relationships among multiple coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hypothesis</strong> – The test hypothesis specified as a string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.ramsey_test">
+<span class="sig-name descname"><span class="pre">ramsey_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.ramsey_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.ramsey_test" title="Link to this definition"></a></dt>
+<dd><p>Model specification test used to test functional form. The Ramsey Test is often called the “Ramsey RESET test” which stands for “Ramsey Regression Equation Specification Error Test.”</p>
+<p>Power notation is different in Python’s statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame with columns [power, pvalue]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.coefficients_and_covariance">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.coefficients_and_covariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.coefficients_and_covariance" title="Link to this definition"></a></dt>
+<dd><p>Extracts the coefficients and covariance matrix from a statsmodel regression..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a tuple containing (coefficients, covariance_matrix)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.coefficients_and_covariance_frame">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.coefficients_and_covariance_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.coefficients_and_covariance_frame" title="Link to this definition"></a></dt>
+<dd><p>Returns a Pandas DataFrame of the cofficients and covariance matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dataframe containing the cofficients, and covariance matrix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.coefficients_draw">
+<span class="sig-name descname"><span class="pre">coefficients_draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LinearModels.coefficients_draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LinearModels.coefficients_draw" title="Link to this definition"></a></dt>
+<dd><p>Given a regression model, this function takes a random draw for the coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of draws. Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Draw(s) from the coefficients.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LinearModels.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LinearModels.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">TimeSeriesLinearModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#TimeSeriesLinearModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel" title="Link to this definition"></a></dt>
+<dd><p>Base class for linear models. This class wraps statsmodels’ RegressionResults and provides additional methods relevant to linear models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.summary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.cite">
+<span class="sig-name descname"><span class="pre">cite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.cite" title="Link to this definition"></a></dt>
+<dd><p>Returns citations for the source of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.prediction_intervals">
+<span class="sig-name descname"><span class="pre">prediction_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.prediction_intervals" title="Link to this definition"></a></dt>
+<dd><p>Returns a table of prediction intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.standardized_coefficients">
+<span class="sig-name descname"><span class="pre">standardized_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.standardized_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns the standardized coefficients.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Standardized Coefficients</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.elasticities">
+<span class="sig-name descname"><span class="pre">elasticities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.elasticities" title="Link to this definition"></a></dt>
+<dd><p>Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.scaled_coefficients">
+<span class="sig-name descname"><span class="pre">scaled_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.scaled_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns a pandas.Dataframe containing the standardized cofficients (also known as beta weights) and elasticities.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+The function reports three columns which contain the coefficients, the standardized coefficients, and the elasticities evaluated at the means of the variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.plot_actual_fitted">
+<span class="sig-name descname"><span class="pre">plot_actual_fitted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.plot_actual_fitted" title="Link to this definition"></a></dt>
+<dd><p>Plots actual values and predicted values with upper and lower prediction intervals for the given linear model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.wald_test">
+<span class="sig-name descname"><span class="pre">wald_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.wald_test" title="Link to this definition"></a></dt>
+<dd><p>Test for linear relationships among multiple coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hypothesis</strong> – The test hypothesis specified as a string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.ramsey_test">
+<span class="sig-name descname"><span class="pre">ramsey_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.ramsey_test" title="Link to this definition"></a></dt>
+<dd><p>Model specification test used to test functional form. The Ramsey Test is often called the “Ramsey RESET test” which stands for “Ramsey Regression Equation Specification Error Test.”</p>
+<p>Power notation is different in Python’s statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame with columns [power, pvalue]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.coefficients_and_covariance">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.coefficients_and_covariance" title="Link to this definition"></a></dt>
+<dd><p>Extracts the coefficients and covariance matrix from a statsmodel regression..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a tuple containing (coefficients, covariance_matrix)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.coefficients_and_covariance_frame">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.coefficients_and_covariance_frame" title="Link to this definition"></a></dt>
+<dd><p>Returns a Pandas DataFrame of the cofficients and covariance matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dataframe containing the cofficients, and covariance matrix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.coefficients_draw">
+<span class="sig-name descname"><span class="pre">coefficients_draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.coefficients_draw" title="Link to this definition"></a></dt>
+<dd><p>Given a regression model, this function takes a random draw for the coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of draws. Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Draw(s) from the coefficients.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.TimeSeriesLinearModel.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.TimeSeriesLinearModel.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">CrossSectionLinearModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#CrossSectionLinearModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel" title="Link to this definition"></a></dt>
+<dd><p>Base class for linear models. This class wraps statsmodels’ RegressionResults and provides additional methods relevant to linear models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.summary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.cite">
+<span class="sig-name descname"><span class="pre">cite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.cite" title="Link to this definition"></a></dt>
+<dd><p>Returns citations for the source of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.prediction_intervals">
+<span class="sig-name descname"><span class="pre">prediction_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.prediction_intervals" title="Link to this definition"></a></dt>
+<dd><p>Returns a table of prediction intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.standardized_coefficients">
+<span class="sig-name descname"><span class="pre">standardized_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.standardized_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns the standardized coefficients.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Standardized Coefficients</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.elasticities">
+<span class="sig-name descname"><span class="pre">elasticities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.elasticities" title="Link to this definition"></a></dt>
+<dd><p>Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.scaled_coefficients">
+<span class="sig-name descname"><span class="pre">scaled_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.scaled_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Returns a pandas.Dataframe containing the standardized cofficients (also known as beta weights) and elasticities.
+A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.
+The function reports three columns which contain the coefficients, the standardized coefficients, and the elasticities evaluated at the means of the variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.plot_actual_fitted">
+<span class="sig-name descname"><span class="pre">plot_actual_fitted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.plot_actual_fitted" title="Link to this definition"></a></dt>
+<dd><p>Plots actual values and predicted values with upper and lower prediction intervals for the given linear model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.wald_test">
+<span class="sig-name descname"><span class="pre">wald_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.wald_test" title="Link to this definition"></a></dt>
+<dd><p>Test for linear relationships among multiple coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hypothesis</strong> – The test hypothesis specified as a string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.ramsey_test">
+<span class="sig-name descname"><span class="pre">ramsey_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.ramsey_test" title="Link to this definition"></a></dt>
+<dd><p>Model specification test used to test functional form. The Ramsey Test is often called the “Ramsey RESET test” which stands for “Ramsey Regression Equation Specification Error Test.”</p>
+<p>Power notation is different in Python’s statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame with columns [power, pvalue]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.coefficients_and_covariance">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.coefficients_and_covariance" title="Link to this definition"></a></dt>
+<dd><p>Extracts the coefficients and covariance matrix from a statsmodel regression..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a tuple containing (coefficients, covariance_matrix)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.coefficients_and_covariance_frame">
+<span class="sig-name descname"><span class="pre">coefficients_and_covariance_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.coefficients_and_covariance_frame" title="Link to this definition"></a></dt>
+<dd><p>Returns a Pandas DataFrame of the cofficients and covariance matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dataframe containing the cofficients, and covariance matrix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.coefficients_draw">
+<span class="sig-name descname"><span class="pre">coefficients_draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.coefficients_draw" title="Link to this definition"></a></dt>
+<dd><p>Given a regression model, this function takes a random draw for the coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of draws. Defaults to 1.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Draw(s) from the coefficients.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.CrossSectionLinearModel.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.CrossSectionLinearModel.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">BinaryChoiceModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels" title="Link to this definition"></a></dt>
+<dd><p>Base class for Binary Choice Models. Provides general methods related to binary choice models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.predict_and_rank">
+<span class="sig-name descname"><span class="pre">predict_and_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels.predict_and_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.predict_and_rank" title="Link to this definition"></a></dt>
+<dd><p>Predict probabilities from a binary choice model and order probabilities from lowest to highest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exog</strong> – New explanatory variables.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predictions by rank.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.classification_table">
+<span class="sig-name descname"><span class="pre">classification_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels.classification_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.classification_table" title="Link to this definition"></a></dt>
+<dd><p>Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model’s predictive accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p_cutoff</strong> (<em>number</em><em>, </em><em>optional</em>) – Predicted probabilities greater than the p_cutoff are classified as 1, and 0 otherwise. If p_cutoff is unspecified, the p_cutoff is set equal to the mean of the predicted probabilities.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The classification table for the associated estimated model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.marginal_effects">
+<span class="sig-name descname"><span class="pre">marginal_effects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels.marginal_effects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.marginal_effects" title="Link to this definition"></a></dt>
+<dd><p>The average change in probability across all observations in the sample when values of a predictor variable increase by one unit and all other predictor variables are held constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Marginal effects summary table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.wald_test_binary">
+<span class="sig-name descname"><span class="pre">wald_test_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#BinaryChoiceModels.wald_test_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.wald_test_binary" title="Link to this definition"></a></dt>
+<dd><p>Prints the Wald test stastistic and p-value for the given hypothesis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.BinaryChoiceModels.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.BinaryChoiceModels.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">LogitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#LogitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.LogitModel" title="Link to this definition"></a></dt>
+<dd><p>Logit Model.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.LogitModel.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#tprstats.models.LogitModel.result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#tprstats.models.LogitModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.LogitModel.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.predict_and_rank">
+<span class="sig-name descname"><span class="pre">predict_and_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.predict_and_rank" title="Link to this definition"></a></dt>
+<dd><p>Predict probabilities from a binary choice model and order probabilities from lowest to highest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exog</strong> – New explanatory variables.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predictions by rank.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.classification_table">
+<span class="sig-name descname"><span class="pre">classification_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.classification_table" title="Link to this definition"></a></dt>
+<dd><p>Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model’s predictive accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p_cutoff</strong> (<em>number</em><em>, </em><em>optional</em>) – Predicted probabilities greater than the p_cutoff are classified as 1, and 0 otherwise. If p_cutoff is unspecified, the p_cutoff is set equal to the mean of the predicted probabilities.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The classification table for the associated estimated model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.marginal_effects">
+<span class="sig-name descname"><span class="pre">marginal_effects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.marginal_effects" title="Link to this definition"></a></dt>
+<dd><p>The average change in probability across all observations in the sample when values of a predictor variable increase by one unit and all other predictor variables are held constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Marginal effects summary table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.wald_test_binary">
+<span class="sig-name descname"><span class="pre">wald_test_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.wald_test_binary" title="Link to this definition"></a></dt>
+<dd><p>Prints the Wald test stastistic and p-value for the given hypothesis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.LogitModel.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.LogitModel.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">ProbitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#ProbitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.ProbitModel" title="Link to this definition"></a></dt>
+<dd><p>Probit Models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.ProbitModel.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#tprstats.models.ProbitModel.result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#tprstats.models.ProbitModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.ProbitModel.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.predict_and_rank">
+<span class="sig-name descname"><span class="pre">predict_and_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.predict_and_rank" title="Link to this definition"></a></dt>
+<dd><p>Predict probabilities from a binary choice model and order probabilities from lowest to highest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exog</strong> – New explanatory variables.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predictions by rank.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.classification_table">
+<span class="sig-name descname"><span class="pre">classification_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.classification_table" title="Link to this definition"></a></dt>
+<dd><p>Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model’s predictive accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p_cutoff</strong> (<em>number</em><em>, </em><em>optional</em>) – Predicted probabilities greater than the p_cutoff are classified as 1, and 0 otherwise. If p_cutoff is unspecified, the p_cutoff is set equal to the mean of the predicted probabilities.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The classification table for the associated estimated model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.marginal_effects">
+<span class="sig-name descname"><span class="pre">marginal_effects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.marginal_effects" title="Link to this definition"></a></dt>
+<dd><p>The average change in probability across all observations in the sample when values of a predictor variable increase by one unit and all other predictor variables are held constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Marginal effects summary table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.wald_test_binary">
+<span class="sig-name descname"><span class="pre">wald_test_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.wald_test_binary" title="Link to this definition"></a></dt>
+<dd><p>Prints the Wald test stastistic and p-value for the given hypothesis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ProbitModel.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ProbitModel.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">ARIMAModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#ARIMAModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.ARIMAModel" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel.formula">
+<span class="sig-name descname"><span class="pre">formula</span></span><a class="headerlink" href="#tprstats.models.ARIMAModel.formula" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#tprstats.models.ARIMAModel.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#tprstats.models.ARIMAModel.result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#ARIMAModel.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.ARIMAModel.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tprstats.models.ARIMAModel.handle_exog">
+<span class="sig-name descname"><span class="pre">handle_exog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tprstats.models.ARIMAModel.handle_exog" title="Link to this definition"></a></dt>
+<dd><p>Creates a design matrix for out-of-sample data based on the given model’s formula ModelSpec.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tprstats.models.model">
+<span class="sig-prename descclassname"><span class="pre">tprstats.models.</span></span><span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/models.html#model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.models.model" title="Link to this definition"></a></dt>
+<dd><p>Constructs a model for the given model name. Valid names are “cs” for cross-sectional linear model, “ts” for time series linear model, “logit” for logit model, “probit” for probit model,  and “arima” for ARIMA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of model to be constructed.</p></li>
+<li><p><strong>formula</strong> (<em>formula_like</em>) – Formula used to construct the model object.</p></li>
+<li><p><strong>data</strong> (<em>Dataframe</em>) – Data to fit the model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Raises when the name value is not recognized.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A model object for the given model name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../hypothesis_test/index.html" class="btn btn-neutral float-left" title="tprstats.hypothesis_test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../plots/index.html" class="btn btn-neutral float-right" title="tprstats.plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stephen Epple.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

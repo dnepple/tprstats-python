@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tprstats.fit_distribution &mdash; tprstats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="tprstats.hypothesis_test" href="../hypothesis_test/index.html" />
+    <link rel="prev" title="tprstats.experimental_design" href="../experimental_design/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tprstats
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plots.html">Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../formula.html">Formula Notation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">tprstats</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../experimental_design/index.html">tprstats.experimental_design</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tprstats.fit_distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../hypothesis_test/index.html">tprstats.hypothesis_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../models/index.html">tprstats.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plots/index.html">tprstats.plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tprstats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">tprstats</a></li>
+      <li class="breadcrumb-item active">tprstats.fit_distribution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/tprstats/fit_distribution/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tprstats.fit_distribution">
+<span id="tprstats-fit-distribution"></span><h1>tprstats.fit_distribution<a class="headerlink" href="#module-tprstats.fit_distribution" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tprstats.fit_distribution.DISTRIBUTIONS">
+<span class="sig-prename descclassname"><span class="pre">tprstats.fit_distribution.</span></span><span class="sig-name descname"><span class="pre">DISTRIBUTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['norm',</span> <span class="pre">'uniform',</span> <span class="pre">'t',</span> <span class="pre">'skewnorm']</span></em><a class="headerlink" href="#tprstats.fit_distribution.DISTRIBUTIONS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tprstats.fit_distribution.POSITIVE_ONLY_DISTRIBUTIONS">
+<span class="sig-prename descclassname"><span class="pre">tprstats.fit_distribution.</span></span><span class="sig-name descname"><span class="pre">POSITIVE_ONLY_DISTRIBUTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['weibull_min',</span> <span class="pre">'gamma',</span> <span class="pre">'lognorm',</span> <span class="pre">'expon']</span></em><a class="headerlink" href="#tprstats.fit_distribution.POSITIVE_ONLY_DISTRIBUTIONS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tprstats.fit_distribution.calculate_aic">
+<span class="sig-prename descclassname"><span class="pre">tprstats.fit_distribution.</span></span><span class="sig-name descname"><span class="pre">calculate_aic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/fit_distribution.html#calculate_aic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.fit_distribution.calculate_aic" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Akaike Information Criterion (AIC) given a valid scipy.stats distribution namestring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distribution</strong> (<em>str</em>) – The name of the distribution. Must be a solution from the package scipy.stats.</p></li>
+<li><p><strong>data</strong> (<em>pandas.DataFrame</em>) – The data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>AIC for the given distribution and data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tprstats.fit_distribution.list_aic">
+<span class="sig-prename descclassname"><span class="pre">tprstats.fit_distribution.</span></span><span class="sig-name descname"><span class="pre">list_aic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/fit_distribution.html#list_aic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.fit_distribution.list_aic" title="Link to this definition"></a></dt>
+<dd><p>List AICs for the included distributions.
+Included distributions: normal, uniform, t, skew normal, weibull, gamma, log-normal and exponentional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pandas.DataFrame</em>) – The data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AIC values calculated for the included distributions with respect to the data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tprstats.fit_distribution.select_distribution">
+<span class="sig-prename descclassname"><span class="pre">tprstats.fit_distribution.</span></span><span class="sig-name descname"><span class="pre">select_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/tprstats/fit_distribution.html#select_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tprstats.fit_distribution.select_distribution" title="Link to this definition"></a></dt>
+<dd><p>Fits up to 8 different distributions to a set of data and recommends the best-fitting distribution, where best-fitting is considered to be the distribution with the smallest Akaike Information Criterion (AIC) value.
+Included distributions: normal, uniform, t, skew normal, weibull, gamma, log-normal and exponentional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pandas.DataFrame</em>) – The data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The name of the best-fitting distribution, i.e., the distribution with the lowest AIC.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../experimental_design/index.html" class="btn btn-neutral float-left" title="tprstats.experimental_design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../hypothesis_test/index.html" class="btn btn-neutral float-right" title="tprstats.hypothesis_test" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stephen Epple.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

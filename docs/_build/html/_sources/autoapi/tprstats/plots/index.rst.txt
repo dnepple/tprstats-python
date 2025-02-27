@@ -1,0 +1,66 @@
+tprstats.plots
+==============
+
+.. py:module:: tprstats.plots
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: control_chart(mu, sig, n, alpha, data)
+
+   plots a control chart for monitoring a production process for a product with a continuous measure (e.g., weight of a package).
+
+   :param mu: The anticipated mean when the production process is working properly.
+   :type mu: float
+   :param sig: The anticipated standard deviation when the process is working properly.
+   :type sig: float
+   :param n: The number of observations per sample.
+   :type n: int
+   :param alpha: The significance level.
+   :type alpha: float
+   :param data: The dataframe to be plotted.
+   :type data: Dataframe
+
+
+.. py:function:: control_chart_binary(p, n, alpha, data)
+
+   Plots a control chart for monitoring a production process for binary outcomes.
+
+   :param p: The target probability for the outcome expressed as a value between 0 and 1.
+   :type p: float
+   :param n: The number of observations per sample.
+   :type n: int
+   :param alpha: The significance level.
+   :type alpha: float
+   :param data: The dataframe to be plotted.
+   :type data: Dataframe
+
+
+.. py:function:: plot_3D(x_label, y_label, z_label, data, elev=10, azim=45)
+
+   Plots a 3D scatterplot with regression plane.
+
+   :param x_label: The x_label. Must match the dataframe.
+   :param y_label: The y_label. Must match the dataframe.
+   :param z_label: The z_label. Must match the dataframe.
+   :param data: The dataframe.
+   :param elev: Elevation view angle. Defaults to 10.
+   :type elev: int, optional
+   :param azim: Azimuth view angle. Defaults to 45.
+   :type azim: int, optional
+
+
+.. py:function:: hist_CI(data, alpha=0.1, bins=20)
+
+   Histogram and confidence interval for a set of data.
+
+   :param data: The data.
+   :param alpha: Significance level. Defaults to 0.1.
+   :type alpha: float, optional
+   :param bins: Number of histogram bins. Defaults to 20.
+   :type bins: int, optional
+
+

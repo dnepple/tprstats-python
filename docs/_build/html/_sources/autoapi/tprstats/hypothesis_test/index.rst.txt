@@ -1,0 +1,24 @@
+tprstats.hypothesis_test
+========================
+
+.. py:module:: tprstats.hypothesis_test
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: test_population_mean(data, popmean, alpha=0.05)
+
+   Test of a null hypothesis about a sample mean.
+   :param data: Data
+   :param popmean: Population Mean
+   :type popmean: float
+   :param alpha: Significance Level. Defaults to 0.05.
+   :type alpha: float, optional
+
+   :returns: Returns the t-statistic, p_value, confidence interval and sample.
+   :rtype: pandas.Series
+
+

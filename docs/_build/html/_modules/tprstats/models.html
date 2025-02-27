@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tprstats.models &mdash; tprstats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tprstats
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plots.html">Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../formula.html">Formula Notation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tprstats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tprstats.models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tprstats.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">statsmodels.api</span> <span class="kn">import</span> <span class="n">OLS</span> <span class="k">as</span> <span class="n">sm_OLS</span><span class="p">,</span> <span class="n">Logit</span> <span class="k">as</span> <span class="n">sm_Logit</span><span class="p">,</span> <span class="n">Probit</span> <span class="k">as</span> <span class="n">sm_Probit</span>
+<span class="kn">from</span> <span class="nn">formulaic</span> <span class="kn">import</span> <span class="n">model_matrix</span> <span class="k">as</span> <span class="n">design_matrices</span>
+<span class="kn">from</span> <span class="nn">statsmodels.tsa.api</span> <span class="kn">import</span> <span class="n">ARIMA</span> <span class="k">as</span> <span class="n">sm_ARIMA</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mean</span> <span class="k">as</span> <span class="n">np_mean</span><span class="p">,</span>
+    <span class="n">random</span> <span class="k">as</span> <span class="n">np_random</span><span class="p">,</span>
+    <span class="n">column_stack</span> <span class="k">as</span> <span class="n">np_column_stack</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">.plots</span> <span class="kn">import</span> <span class="n">_plot_actual_fitted</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.diagnostic</span> <span class="kn">import</span> <span class="n">linear_reset</span>
+
+<span class="c1"># numpy required for use in patsy formulae</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">trunc</span><span class="p">,</span> <span class="n">absolute</span>  <span class="c1"># noqa: F401</span>
+
+
+<div class="viewcode-block" id="ExogMixin">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.ExogMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">ExogMixin</span><span class="p">:</span>
+<div class="viewcode-block" id="ExogMixin.handle_exog">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.ExogMixin.handle_exog">[docs]</a>
+    <span class="k">def</span> <span class="nf">handle_exog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a design matrix for out-of-sample data based on the given model&#39;s formula ModelSpec.&quot;&quot;&quot;</span>
+        <span class="n">mspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">model_spec</span>
+        <span class="n">exog</span> <span class="o">=</span> <span class="n">design_matrices</span><span class="p">(</span><span class="n">mspec</span><span class="p">,</span> <span class="n">exog</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exog</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LinearModels">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels">[docs]</a>
+<span class="k">class</span> <span class="nc">LinearModels</span><span class="p">(</span><span class="n">ExogMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for linear models. This class wraps statsmodels&#39; RegressionResults and provides additional methods relevant to linear models.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">design_matrices</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">sm_OLS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span>
+
+<div class="viewcode-block" id="LinearModels.summary">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.summary">[docs]</a>
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">slim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.predict">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exog</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exog</span><span class="o">=</span><span class="n">exog</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.cite">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.cite">[docs]</a>
+    <span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns citations for the source of the model.&quot;&quot;&quot;</span>
+
+        <span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;Seabold, Skipper, and Josef Perktold. “statsmodels: Econometric and statistical modeling with python.” Proceedings of the 9th Python in Science Conference. 2010.&quot;</span>
+        <span class="n">citation_bibtex_entry</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        @inproceedings{seabold2010statsmodels,</span>
+<span class="s2">        title={statsmodels: Econometric and statistical modeling with python},</span>
+<span class="s2">        author={Seabold, Skipper and Perktold, Josef},</span>
+<span class="s2">        booktitle={9th Python in Science Conference},</span>
+<span class="s2">        year=</span><span class="si">{2010}</span><span class="s2">,</span>
+<span class="s2">        }</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cite statsmodels for scientific publications:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cite statsmodels using bibtex:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">citation_bibtex_entry</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.prediction_intervals">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.prediction_intervals">[docs]</a>
+    <span class="k">def</span> <span class="nf">prediction_intervals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a table of prediction intervals.&quot;&quot;&quot;</span>
+        <span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exog</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="n">prediction_table</span> <span class="o">=</span> <span class="n">predictions</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="n">prediction_table</span> <span class="o">=</span> <span class="n">prediction_table</span><span class="p">[[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;obs_ci_lower&quot;</span><span class="p">,</span> <span class="s2">&quot;obs_ci_upper&quot;</span><span class="p">]]</span>
+        <span class="n">prediction_table</span> <span class="o">=</span> <span class="n">prediction_table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="s2">&quot;Predicted&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;obs_ci_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;obs_ci_upper&quot;</span><span class="p">:</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">prediction_table</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.standardized_coefficients">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.standardized_coefficients">[docs]</a>
+    <span class="k">def</span> <span class="nf">standardized_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the standardized coefficients.</span>
+<span class="sd">        A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.Series: Standardized Coefficients</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">standardized_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">standardized_coefs</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">standardized_coefs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.elasticities">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.elasticities">[docs]</a>
+    <span class="k">def</span> <span class="nf">elasticities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elasticities evaluated at the means of the variables are calculated for the coefficients of a linear regression model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">means</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">y_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">coefs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">)</span>
+
+        <span class="n">elasticities</span> <span class="o">=</span> <span class="n">coefs</span> <span class="o">*</span> <span class="p">(</span><span class="n">means</span> <span class="o">/</span> <span class="n">y_mean</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">elasticities</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.scaled_coefficients">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.scaled_coefficients">[docs]</a>
+    <span class="k">def</span> <span class="nf">scaled_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a pandas.Dataframe containing the standardized cofficients (also known as beta weights) and elasticities.</span>
+<span class="sd">        A standardized coefficient is the coefficient obtained from a regression in which both the independent variable and the dependent variable are standardized to have mean equal to zero and standard deviation equal to one.</span>
+<span class="sd">        The function reports three columns which contain the coefficients, the standardized coefficients, and the elasticities evaluated at the means of the variables.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">std_coefs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardized_coefficients</span><span class="p">()</span>
+        <span class="n">elasticities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elasticities</span><span class="p">()</span>
+        <span class="n">coefs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">coefs</span><span class="o">=</span><span class="n">coefs</span><span class="p">,</span> <span class="n">std_coefs</span><span class="o">=</span><span class="n">std_coefs</span><span class="p">,</span> <span class="n">elasticities</span><span class="o">=</span><span class="n">elasticities</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">table</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.plot_actual_fitted">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.plot_actual_fitted">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_actual_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots actual values and predicted values with upper and lower prediction intervals for the given linear model.&quot;&quot;&quot;</span>
+        <span class="n">y_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
+        <span class="n">Pred_and_PI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">Pred_and_PI</span><span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">]</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">Pred_and_PI</span><span class="p">[</span><span class="s2">&quot;obs_ci_lower&quot;</span><span class="p">]</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="n">Pred_and_PI</span><span class="p">[</span><span class="s2">&quot;obs_ci_upper&quot;</span><span class="p">]</span>
+        <span class="n">_plot_actual_fitted</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_id</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.wald_test">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.wald_test">[docs]</a>
+    <span class="k">def</span> <span class="nf">wald_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypothesis</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test for linear relationships among multiple coefficients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hypothesis: The test hypothesis specified as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Statsmodels FutureWarning: The behavior of wald_test will change after 0.14 to returning scalar test statistic values.</span>
+        <span class="c1"># To get the future behavior now, set scalar to True.</span>
+        <span class="n">wald_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">wald_test</span><span class="p">(</span><span class="n">r_matrix</span><span class="o">=</span><span class="n">hypothesis</span><span class="p">,</span> <span class="n">use_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scalar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p-value: &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">wald_test</span><span class="o">.</span><span class="n">pvalue</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.ramsey_test">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.ramsey_test">[docs]</a>
+    <span class="k">def</span> <span class="nf">ramsey_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Model specification test used to test functional form. The Ramsey Test is often called the &quot;Ramsey RESET test&quot; which stands for &quot;Ramsey Regression Equation Specification Error Test.&quot;</span>
+
+<span class="sd">        Power notation is different in Python&#39;s statsmodels and R. Power=2 in Python is equivalent to Power=1 in R.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame : Frame with columns [power, pvalue]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="n">pvalues</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;power&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">linear_reset</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">use_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;power&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">linear_reset</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">use_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.coefficients_and_covariance">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.coefficients_and_covariance">[docs]</a>
+    <span class="k">def</span> <span class="nf">coefficients_and_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts the coefficients and covariance matrix from a statsmodel regression..</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple: Returns a tuple containing (coefficients, covariance_matrix)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">cov_params</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.coefficients_and_covariance_frame">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.coefficients_and_covariance_frame">[docs]</a>
+    <span class="k">def</span> <span class="nf">coefficients_and_covariance_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Pandas DataFrame of the cofficients and covariance matrix.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A dataframe containing the cofficients, and covariance matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coefs</span><span class="p">,</span> <span class="n">cov_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients_and_covariance</span><span class="p">()</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">np_column_stack</span><span class="p">((</span><span class="n">coefs</span><span class="p">,</span> <span class="n">cov_matrix</span><span class="p">))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">exog_names</span>  <span class="c1"># keep Intercept</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">combined</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;coefs&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">rhs</span><span class="p">])</span>
+        <span class="n">frame</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frame</span></div>
+
+
+<div class="viewcode-block" id="LinearModels.coefficients_draw">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LinearModels.coefficients_draw">[docs]</a>
+    <span class="k">def</span> <span class="nf">coefficients_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a regression model, this function takes a random draw for the coefficients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            size (int, optional): Number of draws. Defaults to 1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame : Draw(s) from the coefficients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coefs</span><span class="p">,</span> <span class="n">cov_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients_and_covariance</span><span class="p">()</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np_random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="n">coef_draws</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">cov_matrix</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">exog_names</span>  <span class="c1"># keep Intercept</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coef_draws</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">rhs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Delegates any method calls not explicitly defined in this wrapper class to the wrapped object</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="TimeSeriesLinearModel">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.TimeSeriesLinearModel">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeSeriesLinearModel</span><span class="p">(</span><span class="n">LinearModels</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">lags</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;maxlags&quot;</span><span class="p">,</span> <span class="n">lags</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;use_correction&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;HAC&quot;</span><span class="p">,</span> <span class="n">cov_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;maxlags&quot;</span><span class="p">:</span> <span class="n">lags</span><span class="p">},</span> <span class="n">use_t</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CrossSectionLinearModel">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.CrossSectionLinearModel">[docs]</a>
+<span class="k">class</span> <span class="nc">CrossSectionLinearModel</span><span class="p">(</span><span class="n">LinearModels</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;HC1&quot;</span><span class="p">,</span> <span class="n">use_t</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BinaryChoiceModels">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels">[docs]</a>
+<span class="k">class</span> <span class="nc">BinaryChoiceModels</span><span class="p">(</span><span class="n">ExogMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Binary Choice Models. Provides general methods related to binary choice models.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">design_matrices</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span>
+
+<div class="viewcode-block" id="BinaryChoiceModels.predict">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exog</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exog</span><span class="o">=</span><span class="n">exog</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryChoiceModels.predict_and_rank">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels.predict_and_rank">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_and_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict probabilities from a binary choice model and order probabilities from lowest to highest.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            exog : New explanatory variables.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            : Predictions by rank.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">exog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exog</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="n">prospects</span> <span class="o">=</span> <span class="n">exog</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">prospects</span><span class="p">[</span><span class="s2">&quot;PredictionNew&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="n">prospects</span><span class="p">[</span><span class="s2">&quot;ProspectRank&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prospects</span><span class="p">[</span><span class="s2">&quot;PredictionNew&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prospects</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;ProspectRank&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryChoiceModels.classification_table">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels.classification_table">[docs]</a>
+    <span class="k">def</span> <span class="nf">classification_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Classification table for binary choice models. For a given estimated model, the classification table rovides a summary of the model&#39;s predictive accuracy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            p_cutoff (number, optional): Predicted probabilities greater than the p_cutoff are classified as 1, and 0 otherwise. If p_cutoff is unspecified, the p_cutoff is set equal to the mean of the predicted probabilities.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: The classification table for the associated estimated model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">p_cutoff</span><span class="p">:</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">p_cutoff</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">np_mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">())</span>
+
+        <span class="n">frequency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">pred_table</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;Summary&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Correct&quot;</span><span class="p">,</span> <span class="s2">&quot;Incorrect&quot;</span><span class="p">,</span> <span class="s2">&quot;Incorrect&quot;</span><span class="p">,</span> <span class="s2">&quot;Correct&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;Actual&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="s2">&quot;Predicted&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="s2">&quot;Frequency&quot;</span><span class="p">:</span> <span class="n">frequency</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">table</span></div>
+
+
+<div class="viewcode-block" id="BinaryChoiceModels.marginal_effects">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels.marginal_effects">[docs]</a>
+    <span class="k">def</span> <span class="nf">marginal_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The average change in probability across all observations in the sample when values of a predictor variable increase by one unit and all other predictor variables are held constant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            : Marginal effects summary table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">marginal_effects_at_the_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get_margeff</span><span class="p">(</span><span class="n">at</span><span class="o">=</span><span class="s2">&quot;overall&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">marginal_effects_at_the_mean</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="BinaryChoiceModels.wald_test_binary">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.BinaryChoiceModels.wald_test_binary">[docs]</a>
+    <span class="k">def</span> <span class="nf">wald_test_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypothesis</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the Wald test stastistic and p-value for the given hypothesis.&quot;&quot;&quot;</span>
+        <span class="n">wald_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">wald_test</span><span class="p">(</span><span class="n">r_matrix</span><span class="o">=</span><span class="n">hypothesis</span><span class="p">,</span> <span class="n">scalar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wald Test Statistic: &quot;</span><span class="p">,</span> <span class="n">wald_test</span><span class="o">.</span><span class="n">statistic</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p-value: &quot;</span><span class="p">,</span> <span class="n">wald_test</span><span class="o">.</span><span class="n">pvalue</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Delegates any method calls not explicitly defined here to the wrapped object</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="LogitModel">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.LogitModel">[docs]</a>
+<span class="k">class</span> <span class="nc">LogitModel</span><span class="p">(</span><span class="n">BinaryChoiceModels</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logit Model.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">sm_Logit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="ProbitModel">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.ProbitModel">[docs]</a>
+<span class="k">class</span> <span class="nc">ProbitModel</span><span class="p">(</span><span class="n">BinaryChoiceModels</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Probit Models.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">sm_Probit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="ARIMAModel">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.ARIMAModel">[docs]</a>
+<span class="k">class</span> <span class="nc">ARIMAModel</span><span class="p">(</span><span class="n">ExogMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># &quot;-1&quot; prevents patsy from adding a constant to the design matrices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span> <span class="o">+</span> <span class="s2">&quot;-1&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">design_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">sm_ARIMA</span><span class="p">(</span><span class="n">endog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;innovations_mle&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ARIMAModel.predict">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.ARIMAModel.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exog</span><span class="p">(</span><span class="n">exog</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exog</span><span class="o">=</span><span class="n">exog</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Delegates any method calls not explicitly defined here to the wrapped object</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="model">
+<a class="viewcode-back" href="../../autoapi/tprstats/models/index.html#tprstats.models.model">[docs]</a>
+<span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a model for the given model name. Valid names are &quot;cs&quot; for cross-sectional linear model, &quot;ts&quot; for time series linear model, &quot;logit&quot; for logit model, &quot;probit&quot; for probit model,  and &quot;arima&quot; for ARIMA model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): Name of model to be constructed.</span>
+<span class="sd">        formula (formula_like): Formula used to construct the model object.</span>
+<span class="sd">        data (Dataframe): Data to fit the model.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: Raises when the name value is not recognized.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        : A model object for the given model name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">match</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;cs&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CrossSectionLinearModel</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;ts&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TimeSeriesLinearModel</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;logit&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LogitModel</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;probit&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ProbitModel</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;arima&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ARIMAModel</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Model name &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; not recognized.&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stephen Epple.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
