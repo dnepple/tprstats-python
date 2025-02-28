@@ -5,12 +5,12 @@ Statistical methods and applications for students at the Tepper School of Busine
 ## Installation
 
 ### Using pip
-`pip install pip@git+https://github.com/dnepple/tprstats-python`
+`pip install git+https://github.com/dnepple/tprstats-python`
 
 ### Using conda
 1. Activate your conda environment.
 2. `conda install git pip`
-3. `pip install pip@git+https://github.com/dnepple/tprstats-python`
+3. `pip install git+https://github.com/dnepple/tprstats-python`
 
 ## License
 
