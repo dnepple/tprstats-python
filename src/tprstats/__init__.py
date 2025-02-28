@@ -10,6 +10,7 @@ __all__ = [
     "test_population_mean",
     "AB_nobs",
     "AB_power",
+    "hello",
 ]
 # read version from installed package
 from importlib.metadata import version
@@ -25,3 +26,4 @@ from .fit_distribution import (
 )
 from .hypothesis_test import test_population_mean
 from .experimental_design import AB_nobs, AB_power
+from .hello import hello
