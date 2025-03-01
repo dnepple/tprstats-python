@@ -199,13 +199,11 @@ class LinearModels(ExogMixin):
 
 
 class TimeSeriesLinearModel(LinearModels):
-    def __init__(self, formula, data, **kwargs):
-        lags = 2
-        kwargs.setdefault("maxlags", lags)
+    def __init__(self, formula, data, maxlags=2, **kwargs):
         kwargs.setdefault("use_correction", True)
         super().__init__(formula, data, **kwargs)
         self.result = self.model.fit(
-            cov_type="HAC", cov_kwds={"maxlags": lags}, use_t=True
+            cov_type="HAC", cov_kwds={"maxlags": maxlags}, use_t=True
         )
 
 
