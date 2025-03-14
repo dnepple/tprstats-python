@@ -8,11 +8,11 @@ authors = [
     ]
 requires-python = ">= 3.10"
 dependencies = [
-    "pandas (>=2.2.3,<3)",
+    "pandas==2.2.2",
     "statsmodels (>=0.14.4,<0.15)",
     "formulaic (>=1.1.1,<2)",
     "scipy (>=1.15.1,<2)",
-    "numpy (>=2.2.2,<3)",
+    "numpy (>=1.26.0,<2)",
     "matplotlib (>=3.9.2,<4)",
     "openpyxl (>=3.1.5,<4)"
     ]
