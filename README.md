@@ -16,6 +16,18 @@ Statistical methods and applications for students at the Tepper School of Busine
 
 `tprstats` was created by Stephen Epple and Dennis Epple. It is licensed under the terms of the MIT license.
 
+## Development
+The package is built with the [Pixi](https://pixi.sh/latest/) package management tool.
+
+`pixi build` - build the package for conda.
+
+If you encounter the following error building inside the devcontainer, simply move the file manually. 
+```bash
+Error:   × failed to move /workspaces/tprstats-python/.pixi/tprstats-python-RojFWwUxk8k/noarch/tprstats-0.1.0-pyhbf21a9e_0.conda to ./tprstats-0.1.0-pyhbf21a9e_0.conda
+```
+
+`pixi run docs` - update and rebuild the documentation website. The build directory is docs/_build/html. 
+
 ## Citations 
 **statsmodels**  
 Skipper, S., & Josef, P. (2010). statsmodels: Econometric and statistical modeling with python. 9th Python in Science Conference
